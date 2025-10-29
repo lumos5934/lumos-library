@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class SingletonGlobalMono<T> : SingletonMono<T> where T : SingletonGlobalMono<T>
+public abstract class SingletonGlobal<T> : SingletonScene<T> where T : SingletonGlobal<T>
 {
     public static T Instance
     {
