@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class ObjectPoolManager : GameManagerComponent
+public class ObjectPool : BaseGameComponent
 {
     #region  >--------------------------------------------------- FIELDS
     

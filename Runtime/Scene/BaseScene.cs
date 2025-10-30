@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class GameSceneManager : GameManagerComponent
+public abstract class BaseScene : BaseGameComponent
 {
     #region  --------------------------------------------------- PROPERTIES
 

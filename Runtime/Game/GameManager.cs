@@ -16,7 +16,7 @@ public class GameManager : SingletonGlobal<GameManager>
     #region  >--------------------------------------------------- FIEDLS
     
     
-    private Dictionary<Type ,GameManagerComponent> _components = new();
+    private Dictionary<Type ,BaseGameComponent> _components = new();
     
     
     #endregion
@@ -52,8 +52,6 @@ public class GameManager : SingletonGlobal<GameManager>
     {
         var orderPrefabs = container.ComponentPrefabs.OrderBy( manager => manager.Order ).ToArray();
         
-        Debug.Log(orderPrefabs.Length);
-        
         for (int i = 0; i < orderPrefabs.Length; i++)
         {
             var component = Instantiate(orderPrefabs[i], transform);
@@ -81,7 +79,7 @@ public class GameManager : SingletonGlobal<GameManager>
     #region  >--------------------------------------------------- GET
     
     
-    public T Get<T>() where T : GameManagerComponent
+    public T Get<T>() where T : BaseGameComponent
     {
         if (_components.TryGetValue(typeof(T), out var component))
         {
@@ -96,7 +94,7 @@ public class GameManager : SingletonGlobal<GameManager>
     #region  >--------------------------------------------------- REGISTER
 
     
-    public void Register<T>(T component) where T : GameManagerComponent
+    public void Register<T>(T component) where T : BaseGameComponent
     {
         if (_components.ContainsKey(component.GetType()))
         {
@@ -108,7 +106,7 @@ public class GameManager : SingletonGlobal<GameManager>
         }
     }
     
-    public void Unregister<T>(T component) where T : GameManagerComponent
+    public void Unregister<T>(T component) where T : BaseGameComponent
     {
         _components.Remove(component.GetType());
     }
