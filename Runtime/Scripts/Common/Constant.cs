@@ -5,9 +5,10 @@
         #region >--------------------------------------------------- PATH
 
 
+        public const string PreInitializer = "PreInitializer";
+        
         public const string GLOBAL = "Global";
-        public const string BOOT = GLOBAL + "/Boot";
-        public const string UI = GLOBAL + "/UI";
+        public const string GLOBAL_UI = GLOBAL + "/UI";
         
         
         #endregion

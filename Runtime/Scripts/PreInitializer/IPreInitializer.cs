@@ -2,7 +2,7 @@
 
 namespace Lumos.DevPack
 {
-    public interface IBootable
+    public interface IPreInitializer
     {
         public int Order { get; }
         public bool IsInitialized { get; }

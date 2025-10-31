@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Lumos.DevPack
 {
-    public class UIGlobalManager : UIBaseManager, IBootable
+    public class UIGlobalManager : UIBaseManager, IPreInitializer
     {
         #region >--------------------------------------------------- PROPERTIES
 
@@ -27,7 +25,7 @@ namespace Lumos.DevPack
 
         public Task InitAsync()
         {
-            var uiGlobalPrefabs = Resources.LoadAll<UIBase>(Constant.UI);
+            var uiGlobalPrefabs = Global.Get<ResourceManager>().LoadAll<UIBase>(Constant.GLOBAL_UI);
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {
@@ -37,8 +35,10 @@ namespace Lumos.DevPack
                 _globalUIPrefabs[key] = value;
             }
             
-            IsInitialized = true;
+            Global.Register(this);
             
+            
+            IsInitialized = true;
             return Task.CompletedTask;
         }
   

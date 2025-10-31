@@ -5,12 +5,6 @@ namespace Lumos.DevPack
 {
     public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>
     {
-        #region --------------------------------------------------- PROPERTIES
-
-
-
-
-        #endregion
         #region --------------------------------------------------- UNITY
 
 
@@ -30,7 +24,7 @@ namespace Lumos.DevPack
         
         private IEnumerator InitAsync() 
         {
-            yield return new WaitUntil(() => Global.IsInitialized);
+            yield return new WaitUntil(() => PreInitializer.IsInitialized);
 
             Init();
         }

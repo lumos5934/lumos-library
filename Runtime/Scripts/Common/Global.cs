@@ -1,59 +1,14 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Lumos.DevPack
 {
     public static class Global
     {
-        #region >--------------------------------------------------- PROPERTIES
-
-
-        public static bool IsInitialized => _isInitialized;
-        
-        
-        #endregion
         #region >--------------------------------------------------- FIELDS
 
         
         private static readonly Dictionary<System.Type, object> Services = new();
-        private static bool _isInitialized = false;
-        
-        #endregion
-        #region >--------------------------------------------------- INIT
-
-
-        static Global()
-        {
-            _ = InitAsync();
-        }
-        
-        private static async Task InitAsync()
-        {
-            if (_isInitialized) return;
-            
-            var bootablePrefabs = Resources.LoadAll<MonoBehaviour>(Constant.BOOT)
-                .OfType<IBootable>()
-                .OrderBy(x => x.Order); 
-            
-            
-            var sortedBootable = bootablePrefabs.OrderBy(x => x.Order).ToList();
-
-            foreach (var bootable in sortedBootable)
-            {
-                var bootableObject = GameObject.Instantiate( bootable as MonoBehaviour).gameObject;
-                
-                await bootable.InitAsync();
-                
-                Register(bootable);
-                GameObject.DontDestroyOnLoad(bootableObject);
-                DebugUtil.Log(" INIT COMPLETE ", $" { bootableObject.name } ");
-            }
-
-            _isInitialized = true;
-            DebugUtil.Log("", " All Managers INIT COMPLETE ");
-        }
         
         
         #endregion
@@ -69,18 +24,31 @@ namespace Lumos.DevPack
             }
 
             Services[typeof(T)] = service;
+            
+            if(service is Object serviceObj)
+            {
+                Object.DontDestroyOnLoad(serviceObj);
+            }
         }
 
         public static void Unregister<T>() where T : class
         {
+            var service = Get<T>();
+            if (service == null) return;
+            
             Services.Remove(typeof(T));
+            
+            if(service is Object serviceObj)
+            {
+                Object.Destroy(serviceObj);
+            }
         }
         
         public static void Unregister<T>(T service) where T : class
         {
-            Services.Remove(service.GetType());
+            Unregister<T>();
         }
-        
+
 
         #endregion
         #region >--------------------------------------------------- GET

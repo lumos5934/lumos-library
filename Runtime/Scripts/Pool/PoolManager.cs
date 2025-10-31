@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 namespace Lumos.DevPack
 {
-    public class ObjectPoolManager : MonoBehaviour, IBootable
+    public class PoolManager : MonoBehaviour, IPreInitializer
     {
         #region >--------------------------------------------------- PROPERTIES
 
@@ -27,8 +27,10 @@ namespace Lumos.DevPack
 
         public Task InitAsync()
         {
-            IsInitialized = true;
+            Global.Register(this);
             
+            
+            IsInitialized = true;
             return Task.CompletedTask; 
         }
 
@@ -37,8 +39,7 @@ namespace Lumos.DevPack
         #region >--------------------------------------------------- CREATE
 
 
-        private ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.POOL_DEFAULT_CAPACITY,
-            int maxSize = Constant.POOL_MAX_SIZE) where T : Component, IPoolable
+        private ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.POOL_DEFAULT_CAPACITY, int maxSize = Constant.POOL_MAX_SIZE) where T : Component, IPoolable
         {
             var pool = new ObjectPool<T>(
                 createFunc: () =>
@@ -79,8 +80,7 @@ namespace Lumos.DevPack
         #region >--------------------------------------------------- GET
 
 
-        public ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.POOL_DEFAULT_CAPACITY,
-            int maxSize = Constant.POOL_MAX_SIZE) where T : Component, IPoolable
+        public ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.POOL_DEFAULT_CAPACITY, int maxSize = Constant.POOL_MAX_SIZE) where T : Component, IPoolable
         {
             var key = prefab.gameObject.name;
 

@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 namespace Lumos.DevPack
 {
     public abstract class SingletonScene<T> : MonoBehaviour where T : MonoBehaviour
