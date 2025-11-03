@@ -4,42 +4,18 @@ using UnityEngine.Pool;
 
 namespace Lumos.DevKit
 {
-    public class PoolManager : MonoBehaviour, IPreInitialize, IGlobal
+    public class PoolManager : BasePoolManager
     {
         #region >--------------------------------------------------- PROPERTIES
 
-        public int PreInitOrder => (int)PreInitializeOrder.ObjectPool;
-        public bool PreInitialized { get; private set; }
+        public override int PreInitOrder => (int)PreInitializeOrder.Pool;
 
 
         #endregion
-        
-        #region >--------------------------------------------------- FIELDS
-
-
-        private Dictionary<string, object> _pools = new();
-        private Dictionary<string, HashSet<Component>> _activeObjects = new();
-
-        
-        #endregion
-        
-        #region >--------------------------------------------------- INIT
-
-
-        public void PreInit()
-        {
-            Global.Register(this);
-            
-            PreInitialized = true;
-        }
-
-
-        #endregion
-        
         #region >--------------------------------------------------- CREATE
 
 
-        private ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) where T : Component, IPoolable
+        protected override ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize)
         {
             var pool = new ObjectPool<T>(
                 createFunc: () =>
@@ -71,72 +47,69 @@ namespace Lumos.DevKit
                 maxSize: maxSize
             );
 
-            _pools.Add(key, pool);
+            pools.Add(key, pool);
             return pool;
         }
 
 
         #endregion
-        
         #region >--------------------------------------------------- GET
 
 
-        public ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) where T : Component, IPoolable
+        public override ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize)
         {
             var key = prefab.gameObject.name;
 
-            return _pools.ContainsKey(key)
-                ? _pools[key] as ObjectPool<T>
+            return pools.ContainsKey(key)
+                ? pools[key] as ObjectPool<T>
                 : CreatePool(key, prefab, defaultCapacity, maxSize);
         }
 
-        public T Get<T>(T prefab) where T : Component, IPoolable
+        public override T Get<T>(T prefab)
         {
             var key = prefab.gameObject.name;
             var pool = GetPool(prefab);
             var obj = pool.Get();
 
-            if (!_activeObjects.ContainsKey(key))
+            if (!activeObjects.ContainsKey(key))
             {
-                _activeObjects[key] = new HashSet<Component>();
+                activeObjects[key] = new HashSet<MonoBehaviour>();
             }
 
-            _activeObjects[key].Add(obj);
+            activeObjects[key].Add(obj);
 
             return obj;
         }
 
 
         #endregion
-        
         #region >--------------------------------------------------- REALEASE
 
 
-        public void Release<T>(T obj) where T : Component, IPoolable
+        public override void Release<T>(T obj)
         {
             var key = obj.gameObject.name;
 
-            if (_pools.TryGetValue(key, out var poolObj))
+            if (pools.TryGetValue(key, out var poolObj))
             {
                 var pool = poolObj as ObjectPool<T>;
                 pool.Release(obj);
             }
 
-            if (_activeObjects.ContainsKey(key))
+            if (activeObjects.ContainsKey(key))
             {
-                _activeObjects[key].Remove(obj);
+                activeObjects[key].Remove(obj);
             }
         }
 
 
         #endregion
-        
         #region >--------------------------------------------------- DESTROY
 
 
-        public void DestroyActiveObjectsAll()
+        public override void DestroyActiveObjectsAll()
         {
-            foreach (var activeSet in _activeObjects.Values)
+            foreach (var activeSet in activeObjects.Values)
             {
                 foreach (var obj in activeSet)
                 {
@@ -149,14 +122,14 @@ namespace Lumos.DevKit
                 activeSet.Clear();
             }
 
-            _activeObjects.Clear();
+            activeObjects.Clear();
         }
 
-        public void DestroyActiveObjects<T>(T prefab) where T : Component, IPoolable
+        public override void DestroyActiveObjects<T>(T prefab)
         {
             var key = prefab.gameObject.name;
 
-            foreach (var obj in _activeObjects[key])
+            foreach (var obj in activeObjects[key])
             {
                 if (obj != null)
                 {
@@ -164,7 +137,7 @@ namespace Lumos.DevKit
                 }
             }
 
-            _activeObjects.Remove(key);
+            activeObjects.Remove(key);
         }
 
 

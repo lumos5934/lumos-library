@@ -2,7 +2,7 @@
 
 namespace Lumos.DevKit
 {
-    public abstract class UISceneManager : UIBaseManager
+    public abstract class UIBaseSceneManager : UIBaseManager
     {
         #region >--------------------------------------------------- INIT
 
@@ -19,6 +19,5 @@ namespace Lumos.DevKit
         
         
         #endregion
-        
     }
 }

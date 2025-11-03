@@ -22,7 +22,7 @@ namespace Lumos.DevKit
         private const float DefaultVolume = 1;
         private Coroutine _stopAsync;
         private AudioSource _audioSource;
-        private AudioManager _audioManager;
+        private IAudioManager _audioManager;
         private bool _isPause;
         
         
@@ -32,7 +32,7 @@ namespace Lumos.DevKit
         
         private void Awake()
         {
-            _audioManager = Global.Get<AudioManager>();
+            _audioManager = Global.Get<IAudioManager>();
             _audioSource = GetComponent<AudioSource>();   
             _audioSource.playOnAwake = false;
             _audioSource.loop = false;
@@ -68,7 +68,7 @@ namespace Lumos.DevKit
             _isPause = false;
             
             _audioSource.Stop();
-            _audioManager.ReleaseToManager(this);
+            _audioManager.ReleaseAudioPlayer(this);
         }
 
         public void Pause(bool enable)

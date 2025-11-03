@@ -1,6 +1,4 @@
-﻿using UnityEngine.Events;
-
-namespace Lumos.DevKit
+﻿namespace Lumos.DevKit
 {
     public interface IPoolable
     {

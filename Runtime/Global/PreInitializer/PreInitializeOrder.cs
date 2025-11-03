@@ -3,7 +3,7 @@
     public enum PreInitializeOrder
     {
         Resource = int.MinValue,
-        ObjectPool,
+        Pool,
         UI,
         Audio,
     }

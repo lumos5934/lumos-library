@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Lumos.DevKit
 {
-    public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>
+    public abstract class BaseSceneManager : SingletonScene<BaseSceneManager>, IGlobal
     {
         #region --------------------------------------------------- UNITY
 
@@ -15,12 +15,22 @@ namespace Lumos.DevKit
             StartCoroutine(InitAsync());
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            
+            Global.Unregister(this);
+        }
+
 
         #endregion
         #region --------------------------------------------------- INIT
 
 
-        protected abstract void Init();
+        protected virtual void Init()
+        {
+            Global.Register(this);
+        }
         
         private IEnumerator InitAsync() 
         {

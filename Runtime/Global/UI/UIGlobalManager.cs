@@ -1,70 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using UnityEngine;
 
 namespace Lumos.DevKit
 {
-    public class UIGlobalManager : UIBaseManager, IPreInitialize, IGlobal
+    public class UIGlobalManager : UIBaseGlobalManager
     {
-        #region >--------------------------------------------------- PROPERTIES
+        public override int PreInitOrder => (int)PreInitializeOrder.UI;
 
-        
-        public int PreInitOrder => (int)PreInitializeOrder.UI;
-        public bool PreInitialized { get; private set; }
-
-
-        #endregion
-        #region >--------------------------------------------------- PROPERTIES
-
-
-        private Dictionary<int, UIBase> _globalUIPrefabs = new();
-        
-        
-        #endregion
-        #region >--------------------------------------------------- INIT
-
-
-        public void PreInit()
+        public override void PreInit()
         {
-            var uiGlobalPrefabs = Global.Get<BaseResourceManager>().LoadAll<UIBase>(Path.UI);
-
-            for (int i = 0; i < uiGlobalPrefabs.Length; i++)
-            {
-                var key = uiGlobalPrefabs[i].ID;
-                var value = uiGlobalPrefabs[i];
-
-                _globalUIPrefabs[key] = value;
-            }
-            
-            Global.Register(this);
+            base.PreInit();
             
             PreInitialized = true;
         }
-  
-
-        #endregion
-        #region >--------------------------------------------------- GET & SET
-
-
-        public override T Get<T>(int id)
-        {
-            var returnUi = base.Get<T>(id);
-            
-            if(returnUi != null) return returnUi;
-            
-            return TryCreateGlobalUI<T>(id);
-        }
-        
-        private T TryCreateGlobalUI<T>(int id) where T : UIBase
-        {
-            if (!_globalUIPrefabs.TryGetValue(id, out var prefab)) return null;
-
-            var createdUI = Instantiate(prefab, transform);
-            
-            Register(createdUI);
-            
-            return createdUI as T;
-        }
-
-
-        #endregion
     }
 }

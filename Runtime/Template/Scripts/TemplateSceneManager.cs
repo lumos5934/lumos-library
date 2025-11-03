@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class TemplateSceneManager : BaseSceneManager
 {
-    public UITestSceneManager UI => _uiTestSceneManager;
+    public UIBaseTestSceneManager UIBase => uiBaseTestSceneManager;
     
     
-    [SerializeField] private UITestSceneManager _uiTestSceneManager;
+    [SerializeField] private UIBaseTestSceneManager uiBaseTestSceneManager;
     
     protected override void Init()
     {
-        _uiTestSceneManager.Init();
+        uiBaseTestSceneManager.Init();
     }
 }

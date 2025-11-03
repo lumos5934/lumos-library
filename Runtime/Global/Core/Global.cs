@@ -19,14 +19,22 @@ namespace Lumos.DevKit
         
         public static void Register<T>(T service) where T : IGlobal
         {
-            Unregister<T>();
+            if (Services.ContainsKey(typeof(T)))
+            {
+                Unregister<T>();
+            }
          
-             Services[typeof(T)] = service;
+            Services[typeof(T)] = service;
             
             if(service is MonoBehaviour serviceMono)
             {
                 Object.DontDestroyOnLoad(serviceMono.gameObject);
             }
+        }
+
+        public static void Unregister<T>(T service) where T : IGlobal
+        {
+            Unregister<T>();
         }
 
         public static void Unregister<T>() where T : IGlobal

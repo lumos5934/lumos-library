@@ -3,31 +3,28 @@ using UnityEngine;
 
 namespace Lumos.DevKit
 {
-    public class BaseResourceManager : MonoBehaviour, IPreInitialize, IResourceManager
+    public abstract class BaseResourceManager : MonoBehaviour, IResourceManager, IPreInitialize
     {
-        #region  >--------------------------------------------------- PROPERTIES
-        
-        
-        public int PreInitOrder => (int)PreInitializeOrder.Resource;
-        public bool PreInitialized { get; private set; }
+        #region  >--------------------------------------------------- PROPERTIE
+
+        public abstract int PreInitOrder { get; }
+        public bool PreInitialized { get; protected set; }
         
         
         #endregion
-        #region  >--------------------------------------------------- FIELDS
+        #region  >--------------------------------------------------- FIELD
 
 
-        private Dictionary<string, object> _resources = new();
+        protected Dictionary<string, object> cahcedResources = new();
         
         
         #endregion
         #region  >--------------------------------------------------- INIT
 
 
-        public void PreInit()
+        public virtual void PreInit()
         {
-            Global.Register<IResourceManager>(this);
-            
-            PreInitialized = true;
+            Global.Register((IResourceManager)this);
         }
         
         
@@ -37,36 +34,33 @@ namespace Lumos.DevKit
 
         public T Load<T>(string path) where T : Object
         {
-            if (_resources.TryGetValue(path, out var cacheResource))
+            if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
                 return cacheResource as T;
             }
 
-            var resource = Resources.Load<T>(path);
-            if (resource != null)
-            {
-                _resources[path] = resource;
-            }
-            return resource;
+            return GetResource<T>(path);
         }
 
         public T[] LoadAll<T>(string path) where T : Object
         {
-            if (_resources.TryGetValue(path, out var cacheResource))
+            if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
                 return cacheResource as T[];
             }
-
-            var resource = Resources.LoadAll<T>(path);
-            if (resource != null)
-            {
-                _resources[path] = resource;
-            }
-            return resource;
+            
+            return GetResourceAll<T>(path);
         }
-        
+      
 
         #endregion
+        #region  >--------------------------------------------------- GET
 
+
+        protected abstract T GetResource<T>(string path) where T : Object;
+        protected abstract T[] GetResourceAll<T>(string path) where T : Object;
+        
+        
+        #endregion
     }
 }

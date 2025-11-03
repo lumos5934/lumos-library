@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace Lumos.DevKit
+﻿namespace Lumos.DevKit
 {
     public interface IPreInitialize
     {

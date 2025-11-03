@@ -16,16 +16,17 @@ namespace Lumos.DevKit
         
         private IEnumerator InitAsync()
         {
-            var startTime = Time.realtimeSinceStartup;
+            var totalTime = Time.realtimeSinceStartup;
             
-            var preIniTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a =>
-                {
-                    try { return a.GetTypes(); }
-                    catch (ReflectionTypeLoadException e) { return e.Types.Where(t => t != null); }
-                })
-                .Where(t => typeof(IPreInitialize).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-                .ToList();
+            var preIniTypes = 
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a =>
+                    {
+                        try { return a.GetTypes(); }
+                        catch (ReflectionTypeLoadException e) { return e.Types.Where(t => t != null); }
+                    })
+                    .Where(t => typeof(IPreInitialize).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+                    .ToList();
             
             
             var initInstances = new Queue<IPreInitialize>();
@@ -60,13 +61,14 @@ namespace Lumos.DevKit
 
             while (initQueue.Count > 0)
             {
+                var startTime = Time.realtimeSinceStartup;
                 var target = initQueue.Dequeue();
                 
                 target.PreInit();
                 
                 yield return new WaitUntil(() => target.PreInitialized); 
                 
-                DebugUtil.Log(" INIT COMPLETE ", $" { target.GetType().Name } ");
+                DebugUtil.Log($" INIT COMPLETE [ { Time.realtimeSinceStartup - startTime} ]", $" { target.GetType().Name } ");
             }
             
 
@@ -74,7 +76,7 @@ namespace Lumos.DevKit
             
             Destroy(gameObject);
 
-            DebugUtil.Log($"[ {Time.realtimeSinceStartup - startTime} ]", " All INIT COMPLETE ");
+            DebugUtil.Log($"[ {Time.realtimeSinceStartup - totalTime} ]", " All INIT COMPLETE ");
         }
     }
 }
