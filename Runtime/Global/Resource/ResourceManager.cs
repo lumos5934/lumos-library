@@ -2,7 +2,7 @@
 
 namespace LumosLib.Core
 {
-    public class ResourceManager : BaseResourceManager
+    public class ResourceManager : BaseResourceManager, IResourceManager
     {
         #region  >--------------------------------------------------- PROPERTIES
         
@@ -18,6 +18,7 @@ namespace LumosLib.Core
         {
             base.PreInit();
             
+            
             PreInitialized = true;
         }
         
@@ -26,27 +27,25 @@ namespace LumosLib.Core
         #region  >--------------------------------------------------- LOAD
 
 
-        protected override T GetResource<T>(string path)
+        public T Load<T>(string path) where T : Object
         {
-            var resource = Resources.Load<T>(path);
-            if (resource != null)
+            if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
-                cahcedResources[path] = resource;
+                return cacheResource as T;
             }
-            
-            return resource;
+
+            return Resources.Load<T>(path);
         }
 
-        protected override T[] GetResourceAll<T>(string path)
+        public T[] LoadAll<T>(string path) where T : Object
         {
-            var resource = Resources.LoadAll<T>(path);
-            if (resource != null)
+            if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
-                cahcedResources[path] = resource;
+                return cacheResource as T[];
             }
-            return resource;
+
+            return Resources.LoadAll<T>(path);
         }
-        
 
         #endregion
 

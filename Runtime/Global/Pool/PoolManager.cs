@@ -4,7 +4,7 @@ using UnityEngine.Pool;
 
 namespace LumosLib.Core
 {
-    public class PoolManager : BasePoolManager
+    public class PoolManager : BasePoolManager, IPoolManager
     {
         #region >--------------------------------------------------- PROPERTIES
 
@@ -15,7 +15,7 @@ namespace LumosLib.Core
         #region >--------------------------------------------------- CREATE
 
 
-        protected override ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize)
+        protected override ObjectPool<T> CreatePool<T>(string key, T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) 
         {
             var pool = new ObjectPool<T>(
                 createFunc: () =>
@@ -56,7 +56,7 @@ namespace LumosLib.Core
         #region >--------------------------------------------------- GET
 
 
-        public override ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize)
+        public ObjectPool<T> GetPool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.gameObject.name;
 
@@ -65,7 +65,7 @@ namespace LumosLib.Core
                 : CreatePool(key, prefab, defaultCapacity, maxSize);
         }
 
-        public override T Get<T>(T prefab)
+        public T Get<T>(T prefab)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.gameObject.name;
             var pool = GetPool(prefab);
@@ -86,7 +86,7 @@ namespace LumosLib.Core
         #region >--------------------------------------------------- REALEASE
 
 
-        public override void Release<T>(T obj)
+        public void Release<T>(T obj)  where T : MonoBehaviour, IPoolable
         {
             var key = obj.gameObject.name;
 
@@ -107,7 +107,7 @@ namespace LumosLib.Core
         #region >--------------------------------------------------- DESTROY
 
 
-        public override void DestroyActiveObjectsAll()
+        public void DestroyActiveObjectsAll() 
         {
             foreach (var activeSet in activeObjects.Values)
             {
@@ -125,7 +125,7 @@ namespace LumosLib.Core
             activeObjects.Clear();
         }
 
-        public override void DestroyActiveObjects<T>(T prefab)
+        public void DestroyActiveObjects<T>(T prefab)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.gameObject.name;
 

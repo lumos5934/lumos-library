@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 
 namespace LumosLib.Core
 {
-    public abstract class BaseAudioManager : MonoBehaviour, IAudioManager, IPreInitialize 
+    public abstract class BaseAudioManager : MonoBehaviour, IPreInitialize 
     {
         #region >--------------------------------------------------- PROPERTIE
 
@@ -36,12 +36,12 @@ namespace LumosLib.Core
             
             var resourceManager = Global.Get<IResourceManager>();
             var resources = resourceManager.LoadAll<SoundAssetSO>(Constant.Audio);
+            
             foreach (var resource in resources)
             {
                 _assetResources[resource.GetID()] = resource;
             }
-            
-            
+        
             _playerPrefab = resourceManager.Load<AudioPlayer>(Constant.AudioPlayerPrefab);
             if (_playerPrefab == null)
             {
@@ -49,7 +49,7 @@ namespace LumosLib.Core
             }
             
             
-            Global.Register(this);
+            Global.Register((IAudioManager)this);
         }
         
         
@@ -72,9 +72,6 @@ namespace LumosLib.Core
         #region >--------------------------------------------------- PLAY
         
         
-        public abstract void PlayBGM(int bgmType, int assetId);
-        public abstract void PlaySFX(int assetId);
-        
         protected void Play(int assetId, AudioPlayer player)
         {
             if (_assetResources.TryGetValue(assetId, out SoundAssetSO asset))
@@ -85,22 +82,6 @@ namespace LumosLib.Core
             }
         }
         
-        
-        #endregion
-        #region >--------------------------------------------------- STOP
-
-
-        public abstract void StopBGM(int bgmType);
-        public abstract void StopAll();
-
-        
-        #endregion
-        #region >--------------------------------------------------- PAUSE
-
-
-        public abstract void PauseBGM(int bgmType, bool enable);
-        public abstract void PauseAll(bool enable);
-       
         
         #endregion
         #region >--------------------------------------------------- POOL

@@ -1,6 +1,6 @@
 ﻿namespace LumosLib.Core
 {
-    public class AudioManager : BaseAudioManager
+    public class AudioManager : BaseAudioManager, IAudioManager
     {
         #region >--------------------------------------------------- PROPERTIES
 
@@ -16,6 +16,8 @@
         {
             base.PreInit();
             
+            Global.Register(this);
+            
             PreInitialized = true;
         }
         
@@ -24,7 +26,7 @@
         #region >--------------------------------------------------- PLAY
 
         
-        public override void PlayBGM(int bgmType, int assetId)
+        public void PlayBGM(int bgmType, int assetId)
         {
             if (_bgmPlayers.TryGetValue(bgmType, out var containsPlayer))
             {
@@ -39,7 +41,7 @@
             Play(assetId, bgmPlayer);
         }
         
-        public override void PlaySFX(int assetId)
+        public void PlaySFX(int assetId)
         {
             Play(assetId, _poolManager.Get(_playerPrefab));
         }
@@ -49,7 +51,7 @@
         #region >--------------------------------------------------- STOP
 
 
-        public override void StopBGM(int bgmType)
+        public void StopBGM(int bgmType)
         {
             if (_bgmPlayers.TryGetValue(bgmType, out var containsPlayer))
             {
@@ -57,7 +59,7 @@
             }
         }
         
-        public override void StopAll()
+        public void StopAll()
         {
             foreach (var player in _activePlayers)
             {
@@ -70,7 +72,7 @@
         #region >--------------------------------------------------- PUASE
 
         
-        public override void PauseBGM(int bgmType, bool enable)
+        public void PauseBGM(int bgmType, bool enable)
         {
             if (_bgmPlayers.TryGetValue(bgmType, out var containsPlayer))
             {
@@ -78,7 +80,7 @@
             }
         }
         
-        public override void PauseAll(bool enable)
+        public void PauseAll(bool enable)
         {
             foreach (var player in _activePlayers)
             {
