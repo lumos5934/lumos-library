@@ -27,9 +27,10 @@ namespace LumosLib
         [field: SerializeField] public List<MonoBehaviour> PreInitializes { get; private set; } = new();
 
         
-        private void OnEnable()
+        public void Init()
         {
-#if UNITY_EDITOR
+            SelectedTableType = TableType.None;
+            
             if (PreInitializes.Count == 0)
             {
                 PreInitializes.Add(Resources.Load<DataManager>(nameof(DataManager)));
@@ -48,7 +49,6 @@ namespace LumosLib
                     AudioPlayerPrefab = playerPrefabs[0];
                 }
             }
-#endif
         }
     }
 }

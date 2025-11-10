@@ -31,6 +31,7 @@ namespace LumosLib
             if (config == null)
             {
                 config = ScriptableObject.CreateInstance<PreInitializerConfigSO>();
+                config.Init();
                 
                 AssetDatabase.CreateAsset(config, path);
                 AssetDatabase.SaveAssets();
