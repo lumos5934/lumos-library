@@ -1,9 +1,11 @@
 ﻿using System.IO;
 using UnityEditor;
+using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
 namespace LumosLib
 {
+   
     public static class EditorAssetMenu
     {
         #region >--------------------------------------------------- SCRIPT
@@ -27,7 +29,7 @@ namespace LumosLib
             CreateScript("NewTestEditor.cs", File.ReadAllText(Constant.PathTestEditorTemplate));
         }
         
-        private static void CreateScript(string assetName, string content)
+        private static void CreateScript(string scriptName, string template)
         {
             string path = AssetDatabase.GetAssetPath(Selection.activeObject);
             if (string.IsNullOrEmpty(path))
@@ -36,10 +38,27 @@ namespace LumosLib
                 path = Path.GetDirectoryName(path);
             
             
-            string className = Path.GetFileNameWithoutExtension(assetName);
-            string finalContent = content.Replace("#SCRIPTNAME#", className);
-            
-            ProjectWindowUtil.CreateAssetWithContent(Path.Combine(path, assetName), finalContent);
+            ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
+                0,
+                ScriptableObject.CreateInstance<OnCreateScript>(),
+                Path.Combine(path, $"{scriptName}.cs"),
+                null,
+                template
+            );
+        }
+        
+        internal class OnCreateScript : EndNameEditAction
+        {
+            public override void Action(int instanceId, string pathName, string resourceFile)
+            {
+                string className = Path.GetFileNameWithoutExtension(pathName);
+                string finalContent = resourceFile.Replace("#SCRIPTNAME#", className);
+
+                File.WriteAllText(pathName, finalContent);
+                AssetDatabase.ImportAsset(pathName);
+                var asset = AssetDatabase.LoadAssetAtPath<MonoScript>(pathName);
+                ProjectWindowUtil.ShowCreatedAsset(asset);
+            }
         }
         
 
@@ -50,7 +69,7 @@ namespace LumosLib
         [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/PreInitialize Config SO", false, 0)]
         public static void CreatePreInitializeSO()
         {
-            CreateSO<PreInitializeConfigSO>("PreInitialize Config.asset");
+            CreateSO<PreInitializeConfigSO>($"{Constant.PathPreInitializerConfig}.asset");
         }
              
         [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/Sound Asset SO", false, 0)]

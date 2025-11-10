@@ -20,7 +20,7 @@ namespace LumosLib
             Config = Resources.Load<PreInitializeConfigSO>(Constant.PathPreInitializerConfig);
             if (Config == null)
             {
-                DebugUtil.LogWarning($" not found {Constant.PathPreInitializerConfig} "," INIT FAIL ");
+                DebugUtil.LogWarning($" not found Reousrces/{Constant.PathPreInitializerConfig} "," INIT FAIL ");
                 return;
             }
             
