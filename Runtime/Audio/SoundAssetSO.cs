@@ -11,10 +11,9 @@ namespace LumosLib
         [field: SerializeField] public float VolumeFactor { get; set; }
         [field: SerializeField] public bool IsLoop { get; set; }
 
-        public virtual int GetID()
+        public virtual int GetID() 
         {
             return name.GetHashCode();
-            
         }
     }
 }

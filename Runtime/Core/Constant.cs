@@ -9,9 +9,6 @@
         public const string PreInitializerConfig = "PreInitializer Config";
         public const string TemplateGlobal = "TemplateGlobal";
         public const string Global = "Global";
-        public const string UI = "UI";
-        public const string Audio = "Audio";
-        public const string AudioPlayerPrefab = Audio + "/AudioPlayer";
         
         
         #endregion

@@ -8,6 +8,7 @@ namespace LumosLib
     public class PreInitializer : SingletonGlobal<PreInitializer>
     {
         public bool Initialized { get; private set; }
+        public PreInitializerConfigSO Config { get; private set; }
         
         
         private List<IPreInitialize> PreInitializes = new();
@@ -23,14 +24,14 @@ namespace LumosLib
         {
             base.Awake();
             
-            var config = Resources.Load<PreInitializerConfigSO>(Constant.PreInitializerConfig);
-            if (config == null)
+            Config = Resources.Load<PreInitializerConfigSO>(Constant.PreInitializerConfig);
+            if (Config == null)
             {
                 DebugUtil.LogWarning($" not found {Constant.PreInitializerConfig} "," INIT FAIL ");
                 return;
             }
             
-            foreach (var mono in config.PreInitializes)
+            foreach (var mono in Config.PreInitializes)
             {
                 if (mono is IPreInitialize preInit)
                 {

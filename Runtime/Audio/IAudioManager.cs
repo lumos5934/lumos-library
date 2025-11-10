@@ -4,7 +4,6 @@ namespace LumosLib
 {
     public interface IAudioManager
     {
-        public void SetMixer(AudioMixer mixer);
         public void SetVolume(string groupName, float volume);
 
         public void PlayBGM(int bgmType, int assetId);

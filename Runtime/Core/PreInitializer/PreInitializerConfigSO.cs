@@ -7,15 +7,28 @@ namespace LumosLib
     [CreateAssetMenu(fileName = "PreInitializer Config", menuName = "[ ✨Lumos Lib Asset ]/PreInitializer Config", order = 0) ]
     public class PreInitializerConfigSO : ScriptableObject
     {
+        public enum TableType
+        {
+            None,
+            GoogleSheet,
+            Local
+        }
+        
+        [field: Header("Data")]
+        [field: SerializeField] public TableType SelectedTableType { get; private set; }
+        [field: SerializeField] public string TablePath { get; private set; }
+        
+        
         [field: Header("Audio")]
-
-        [field: SerializeField] public AudioMixerGroup Mixer { get; private set; }
+        [field: SerializeField] public AudioMixer Mixer { get; private set; }
+        [field: SerializeField] public AudioPlayer AudioPlayerPrefab { get; private set; }
 
 
         [field: Header("PreInitialize")]
         [field: SerializeField] public List<MonoBehaviour> PreInitializes { get; private set; } = new();
 
-        private void Awake()
+        
+        private void OnEnable()
         {
 #if UNITY_EDITOR
             if (PreInitializes.Count == 0)
@@ -25,6 +38,16 @@ namespace LumosLib
                 PreInitializes.Add(Resources.Load<ResourceManager>(nameof(ResourceManager)));
                 PreInitializes.Add(Resources.Load<UIManager>(nameof(UIManager)));
                 PreInitializes.Add(Resources.Load<AudioManager>(nameof(AudioManager)));
+            }
+            
+            if (AudioPlayerPrefab == null)
+            {
+                var playerPrefabs = Resources.LoadAll<AudioPlayer>("");
+
+                if (playerPrefabs.Length > 0)
+                {
+                    AudioPlayerPrefab = playerPrefabs[0];
+                }
             }
 #endif
         }

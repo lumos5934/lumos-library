@@ -32,38 +32,36 @@ namespace LumosLib
             _poolManager = BaseGlobal.Pool;
             
             var resourceManager = BaseGlobal.Resource;
-            var resources = resourceManager.LoadAll<SoundAssetSO>(Constant.Audio);
+            var resources = resourceManager.LoadAll<SoundAssetSO>("");
             
             foreach (var resource in resources)
             {
                 _assetResources[resource.GetID()] = resource;
+                
+                Debug.Log(resource.GetID());
             }
-        
-            _playerPrefab = resourceManager.Load<AudioPlayer>(Constant.AudioPlayerPrefab);
+
+            _playerPrefab = PreInitializer.Instance.Config.AudioPlayerPrefab;
             if (_playerPrefab == null)
             {
                 DebugUtil.LogError(" wrong audio player path ", " INIT FAIL ");
+                return;
             }
+            
+            _mixer = PreInitializer.Instance.Config.Mixer;
             
             BaseGlobal.Register<IAudioManager>(this);
         }
         
         #endregion
-        #region >--------------------------------------------------- GET & SET
-        
-        
-        public void SetMixer(AudioMixer mixer)
-        {
-            _mixer = mixer;
-        }
+        #region >--------------------------------------------------- SET
+       
 
         public void SetVolume(string groupName, float volume)
         {
             _mixer.SetFloat(groupName, Mathf.Log10(volume) * 20f);
         }
 
-
-    
 
         #endregion
         #region >--------------------------------------------------- PLAY

@@ -26,7 +26,7 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            var uiGlobalPrefabs =  BaseGlobal.Resource.LoadAll<UIBase>(Constant.UI);
+            var uiGlobalPrefabs =  BaseGlobal.Resource.LoadAll<UIBase>("");
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {

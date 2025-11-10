@@ -1,15 +1,13 @@
 ﻿namespace LumosLib
 {
-    public class ItemData : IData
+    public class ItemData : BaseData
     {
-        public int ID { get; set; }
         public string Name;
         public string Type;
     }
 
-    public class MonsterData : IData
+    public class MonsterData : BaseData
     {
-        public int ID { get; set; }
         public string Name;
         public string Type;
     }

@@ -4,22 +4,11 @@ using UnityEngine.Networking;
 
 namespace LumosLib
 {
-    public class GoogleSheetLoader
+    public class GoogleSheetLoader : BaseTableLoader
     {
-        private string baseUrl =
-            "https://script.google.com/macros/s/AKfycbwRE8EdNSjWSWYMKiojpQabG6ksD7K1neE5wKx-O0_QZ9qHvvpoLgh7H5AX0vc7YBt92w/exec";
-
-        public string Json { get; private set; }
-
-
-        public void SetPath(string path)
+        public override IEnumerator LoadJsonAsync()
         {
-            
-        }
-        
-        public IEnumerator LoadJsonAsync()
-        {
-            using (UnityWebRequest www = UnityWebRequest.Get(baseUrl))
+            using (UnityWebRequest www = UnityWebRequest.Get(_path))
             {
                 yield return www.SendWebRequest();
 

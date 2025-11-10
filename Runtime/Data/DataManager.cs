@@ -13,7 +13,7 @@ namespace LumosLib
         public int PreInitOrder => (int)PreInitializeOrder.Data;
         public bool PreInitialized { get; private set; }
         
-        private Dictionary<Type, Dictionary<int, IData>> _loadDatas = new();
+        private Dictionary<Type, Dictionary<int, BaseData>> _loadDatas = new();
 
 
         private void Awake()
@@ -23,16 +23,24 @@ namespace LumosLib
 
         private IEnumerator LoadDataAsync()
         {
-            var jsonLoader = new GoogleSheetLoader();
-
-            yield return jsonLoader.LoadJsonAsync();
-
-            if (jsonLoader.Json == "")
+            var tableLoader = GetLoader();
+            if (tableLoader == null)
             {
+                PreInitialized = true;
                 yield break;
             }
+
+            tableLoader.SetPath(PreInitializer.Instance.Config.TablePath);
+
+            yield return tableLoader.LoadJsonAsync();
+            if (tableLoader.Json == "")
+            {
+                PreInitialized = true;
+                yield break;
+            }
+           
             
-            var allSheets = JsonConvert.DeserializeObject<Dictionary<string, object[]>>(jsonLoader.Json);
+            var allSheets = JsonConvert.DeserializeObject<Dictionary<string, object[]>>(tableLoader.Json);
 
             var targetAssemblies = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(a => 
@@ -46,7 +54,7 @@ namespace LumosLib
                     try { return a.GetTypes(); }
                     catch (ReflectionTypeLoadException e) { return e.Types.Where(t => t != null); }
                 })
-                .Where(t => typeof(IData).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
+                .Where(t => typeof(BaseData).IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
 
             
             foreach (var type in dataTypes)
@@ -57,11 +65,11 @@ namespace LumosLib
                     var listType = typeof(List<>).MakeGenericType(type);
                     var list = (IList)JsonConvert.DeserializeObject(sheetJsonStr, listType);
 
-                    var dict = new Dictionary<int, IData>();
+                    var dict = new Dictionary<int, BaseData>();
                     
                     foreach (var item in list)
                     {
-                        var data = (IData)item;
+                        var data = (BaseData)item;
                         dict[data.ID] = data;
                     }
                     
@@ -79,7 +87,7 @@ namespace LumosLib
         }
         
         
-        public List<T> GetDataAll<T>() where T : IData
+        public List<T> GetAll<T>() where T : BaseData
         {
             if (_loadDatas.TryGetValue(typeof(T), out var dict))
             {
@@ -87,7 +95,32 @@ namespace LumosLib
             }
 
             DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
-            return new List<T>();
+            return null;
+        }
+        
+        public T Get<T>(int id) where T : BaseData
+        {
+            if (_loadDatas.TryGetValue(typeof(T), out var dict))
+            {
+                if (dict.ContainsKey(id))
+                {
+                    return dict[id] as T;
+                }
+            }
+
+            DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
+            return null;
+        }
+        
+        
+        private BaseTableLoader GetLoader()
+        {
+            return PreInitializer.Instance.Config.SelectedTableType switch
+            {
+                PreInitializerConfigSO.TableType.GoogleSheet => new GoogleSheetLoader(),
+                _ => null,
+            };
         }
     }
+    
 }
