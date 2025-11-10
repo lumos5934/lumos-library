@@ -11,7 +11,7 @@ namespace LumosLib
         static void Initialize()
         {
             TryCreateConfig();
-            CreateGlobalsScript();
+            TryCreateGlobalScript();
         }
         
         
@@ -40,7 +40,7 @@ namespace LumosLib
             }
         }
         
-        private static void CreateGlobalsScript()
+        private static void TryCreateGlobalScript()
         {
             string templatePath = $"{Constant.LumosLib}/Editor/Templates/{Constant.TemplateGlobal}.txt";
             string path = $"Assets/Scripts/{Constant.Global}.cs";

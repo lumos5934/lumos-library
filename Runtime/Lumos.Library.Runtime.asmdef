@@ -1,5 +1,5 @@
 {
-    "name": "Lumos.Library.Core.Runtime",
+    "name": "Lumos.Library.Runtime",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

@@ -1,7 +1,9 @@
 {
-    "name": "Lumos.Library.Core.Editor",
+    "name": "Lumos.Library.Editor",
     "rootNamespace": "",
-    "references": ["GUID:b401b30f8b9e5474fb4b30afc6c476a7"],
+    "references": [
+        "GUID:b401b30f8b9e5474fb4b30afc6c476a7"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
