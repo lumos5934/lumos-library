@@ -3,7 +3,7 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    public class SoundAssetSO : ScriptableObject
+    public class SoundAsset : ScriptableObject
     {
         [field: SerializeField] public AudioMixerGroup MixerGroup { get; set; }
         [field: SerializeField] public AudioClip Clip { get; set; }

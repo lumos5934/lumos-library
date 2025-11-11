@@ -1,8 +1,8 @@
 {
-    "name": "Lumos.Library.Editor",
+    "name": "LumosLib.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:b401b30f8b9e5474fb4b30afc6c476a7"
+        "GUID:324caed91501a9c47a04ebfd87b68794"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

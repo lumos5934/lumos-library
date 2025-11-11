@@ -19,7 +19,7 @@ namespace LumosLib
         
         private readonly Dictionary<int, AudioPlayer> _bgmPlayers = new();
         private readonly HashSet<AudioPlayer> _activePlayers = new();
-        private readonly Dictionary<string, SoundAssetSO> _assetResources = new();
+        private readonly Dictionary<string, SoundAsset> _assetResources = new();
         
         private IPoolManager _poolManager;
         private AudioPlayer _playerPrefab;
@@ -34,7 +34,7 @@ namespace LumosLib
             _poolManager = Global.GetInternal<IPoolManager>();
             
             var resourceManager = Global.GetInternal<IResourceManager>();
-            var resources = resourceManager.LoadAll<SoundAssetSO>("");
+            var resources = resourceManager.LoadAll<SoundAsset>("");
             
             foreach (var resource in resources)
             {
@@ -89,7 +89,7 @@ namespace LumosLib
 
         public void PlayBGM(int bgmType, string assetName)
         {
-            if (_assetResources.TryGetValue(assetName, out SoundAssetSO asset))
+            if (_assetResources.TryGetValue(assetName, out SoundAsset asset))
             {
                 var bgmPlayer = GetBGMPlayer(bgmType) ?? CreateNewPlayer();
 
@@ -104,7 +104,7 @@ namespace LumosLib
 
         public void PlaySFX(string assetName)
         {
-            if (_assetResources.TryGetValue(assetName, out SoundAssetSO asset))
+            if (_assetResources.TryGetValue(assetName, out SoundAsset asset))
             {
                 CreateNewPlayer().Play(asset, OnStopSFX);
             }

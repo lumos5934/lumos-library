@@ -44,7 +44,7 @@ namespace LumosLib
         #region >--------------------------------------------------- SET
         
         
-        public void Play(SoundAssetSO asset, UnityAction<AudioPlayer> onStop)
+        public void Play(SoundAsset asset, UnityAction<AudioPlayer> onStop)
         {
             _isPause = false;
             

@@ -139,7 +139,7 @@ namespace LumosLib
         {
             return PreInitializer.Instance.Config.SelectedTableType switch
             {
-                PreInitializeConfigSO.TableType.GoogleSheet => new GoogleSheetLoader(),
+                PreInitializeConfig.TableType.GoogleSheet => new GoogleSheetLoader(),
                 _ => null,
             };
         }

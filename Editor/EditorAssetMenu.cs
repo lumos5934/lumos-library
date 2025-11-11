@@ -11,25 +11,25 @@ namespace LumosLib
         #region >--------------------------------------------------- SCRIPT
         
         
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Script/GlobalHub Script", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/GlobalHub", false, 0)]
         public static void CreateGlobalHubScript()
         {
             CreateScript("GlobalHub.cs", File.ReadAllText(Constant.PathGlobalHubTemplate));
         }
         
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Script/SceneManager Script", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/SceneManager", false, 0)]
         public static void CreateSceneManagerScript()
         {
             CreateScript("NewSceneManager.cs", File.ReadAllText(Constant.PathSceneManagerTemplate));
         }
         
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Script/TestEditor Script", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/TestEditor", false, 0)]
         public static void CreateTestEditorScript()
         {
             CreateScript("NewTestEditor.cs", File.ReadAllText(Constant.PathTestEditorTemplate));
         }
         
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Script/UI Script", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/UI", false, 0)]
         public static void CreateUIScript()
         {
             CreateScript("UINew.cs", File.ReadAllText(Constant.PathUITemplate));
@@ -72,16 +72,16 @@ namespace LumosLib
         #region >--------------------------------------------------- SO
         
         
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/PreInitialize Config SO", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Scriptable Object/PreInitialize Config", false, 0)]
         public static void CreatePreInitializeSO()
         {
-            CreateSO<PreInitializeConfigSO>($"{Constant.PreInitializerConfig}.asset");
+            CreateSO<PreInitializeConfig>($"{Constant.PreInitializerConfig}.asset");
         }
              
-        [MenuItem("Assets/[ ✨Lumos Lib ]/Scriptable Object/Sound Asset SO", false, 0)]
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Scriptable Object/Sound Asset", false, 0)]
         public static void CreateSoundAssetSO()
         {
-            CreateSO<SoundAssetSO>("NewSoundAsset.asset");
+            CreateSO<SoundAsset>("NewSoundAsset.asset");
         }
         
         private static void CreateSO<T>(string assetName) where T : ScriptableObject

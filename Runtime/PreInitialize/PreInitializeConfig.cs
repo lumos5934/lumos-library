@@ -2,10 +2,11 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
+using TriInspector;
 
 namespace LumosLib
 {
-    public class PreInitializeConfigSO : ScriptableObject
+    public class PreInitializeConfig : ScriptableObject
     {
         public enum TableType
         {
@@ -14,17 +15,19 @@ namespace LumosLib
             Local
         }
         
-        [field: Header("Data")]
+        [field: Title("Data")]
         [field: SerializeField] public TableType SelectedTableType { get; private set; }
-        [field: SerializeField] public string TablePath { get; private set; }
+        [field: SerializeField, HideIf("SelectedTableType", TableType.None)] public string TablePath { get; private set; }
         
         
-        [field: Header("Audio")]
+        [field: PropertySpace(20f)]
+        [field: Title("Audio")]
         [field: SerializeField] public AudioMixer Mixer { get; private set; }
         [field: SerializeField] public AudioPlayer AudioPlayerPrefab { get; private set; }
 
 
-        [field: Header("PreInitialize")]
+        [field: PropertySpace(20f)]
+        [field: Title("PreInitialize")]
         [field: SerializeField] public List<MonoBehaviour> PreInitializeList { get; private set; } = new();
 
 

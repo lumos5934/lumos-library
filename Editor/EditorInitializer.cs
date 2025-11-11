@@ -14,7 +14,7 @@ namespace LumosLib
 
         private static void OnEditorFullyLoaded()
         {
-            if (Resources.Load<PreInitializeConfigSO>(Constant.PreInitializerConfig) == null)
+            if (Resources.Load<PreInitializeConfig>(Constant.PreInitializerConfig) == null)
             {
                 string resourcesDir = Path.Combine(Application.dataPath, "Resources");
                 if (!Directory.Exists(resourcesDir))
@@ -22,7 +22,7 @@ namespace LumosLib
                     Directory.CreateDirectory(resourcesDir);
                 }
                 
-                var config = ScriptableObject.CreateInstance<PreInitializeConfigSO>();
+                var config = ScriptableObject.CreateInstance<PreInitializeConfig>();
                 
                 string assetPath = "Assets/Resources/" + Constant.PreInitializerConfig + ".asset";
                 AssetDatabase.CreateAsset(config, assetPath);
