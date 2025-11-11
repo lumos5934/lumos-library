@@ -3,19 +3,24 @@ using UnityEditor;
 
 public class #SCRIPTNAME# : BaseTestEditorWindow
 {
+    private TestEditorGroup _sampleGroup;
+
     [MenuItem("[ ✨Lumos Lib ]/Test Editor/#SCRIPTNAME#")]
     public static void Open()
     {
+        //MEMO : "" - Window Title
         OnOpen<#SCRIPTNAME#>("#SCRIPTNAME#");
     }
     
     private void OnEnable()
     {
-      
+        _sampleGroup = CreateGroup("#SCRIPTNAME#");
     }
 
     protected override void OnGUI()
     {
         base.OnGUI();
+        
+        FinishDraw();
     }
 }

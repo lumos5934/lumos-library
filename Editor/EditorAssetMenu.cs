@@ -9,7 +9,7 @@ namespace LumosLib
     public static class EditorAssetMenu
     {
         #region >--------------------------------------------------- SCRIPT
-
+        
         
         [MenuItem("Assets/[ ✨Lumos Lib ]/Script/GlobalHub Script", false, 0)]
         public static void CreateGlobalHubScript()

@@ -43,47 +43,49 @@ namespace LumosLib
         {
             base.OnGUI();
             
-            DrawGroup(_testGroup, group =>
+            DrawGroup(_testGroup, () =>
             {
-                group.DrawField("Int" ,ref _intField);
-                group.DrawSpaceLine();
-                group.DrawField("Float",ref _floatField);
-                group.DrawField("String", ref _stringField);
-                group.DrawField("Vector2", ref _vector2Field);
-                group.DrawField("Vector3", ref _vector3Field);
+                _testGroup.DrawField("Int" ,ref _intField);
+                _testGroup.DrawSpaceLine();
+                _testGroup.DrawField("Float",ref _floatField);
+                _testGroup.DrawField("String", ref _stringField);
+                _testGroup.DrawField("Vector2", ref _vector2Field);
+                _testGroup.DrawField("Vector3", ref _vector3Field);
+                _testGroup.DrawField("Vector3", ref _vector3Field);
+                _testGroup.DrawField("Vector3", ref _vector3Field);
                 // MEMO : onClick call back => checked toggle
-                group.DrawField("Boolean", ref _booleanField, null);
-                group.DrawButton("Test Click", () =>
+                _testGroup.DrawField("Boolean", ref _booleanField, null);
+                _testGroup.DrawButton("Test Click", () =>
                 {
                     Debug.Log("Test click");
                 });
             });
             
-            DrawToggleGroup(_testGroup, ref _isToggledTestGroup, group =>
+            DrawToggleGroup(_testGroup, ref _isToggledTestGroup, () =>
             {
-                group.DrawField("Int" ,ref _intField);
-                group.DrawSpaceLine();
-                group.DrawField("Float",ref _floatField);
-                group.DrawField("String", ref _stringField);
-                group.DrawField("Vector2", ref _vector2Field);
-                group.DrawField("Vector3", ref _vector3Field);
-                group.DrawField("Boolean", ref _booleanField, null);
-                group.DrawButton("Test Click", () =>
+                _testGroup.DrawField("Int" ,ref _intField);
+                _testGroup.DrawSpaceLine();
+                _testGroup.DrawField("Float",ref _floatField);
+                _testGroup.DrawField("String", ref _stringField);
+                _testGroup.DrawField("Vector2", ref _vector2Field);
+                _testGroup.DrawField("Vector3", ref _vector3Field);
+                _testGroup.DrawField("Boolean", ref _booleanField, null);
+                _testGroup.DrawButton("Test Click", () =>
                 {
                     Debug.Log("Test click");
                 });
             });
             
-            DrawToggleGroup(_test2Group, ref _isToggledTest2Group, group =>
+            DrawToggleGroup(_test2Group, ref _isToggledTest2Group, () =>
             {
-                group.DrawField("Int" ,ref _intField);
-                group.DrawSpaceLine();
-                group.DrawField("Float",ref _floatField);
-                group.DrawField("String", ref _stringField);
-                group.DrawField("Vector2", ref _vector2Field);
-                group.DrawField("Vector3", ref _vector3Field);
-                group.DrawField("Boolean", ref _booleanField, null);
-                group.DrawButton("Test Click", () =>
+                _test2Group.DrawField("Int" ,ref _intField);
+                _test2Group.DrawSpaceLine();
+                _test2Group.DrawField("Float",ref _floatField);
+                _test2Group.DrawField("String", ref _stringField);
+                _test2Group.DrawField("Vector2", ref _vector2Field);
+                _test2Group.DrawField("Vector3", ref _vector3Field);
+                _test2Group.DrawField("Boolean", ref _booleanField, null);
+                _test2Group.DrawButton("Test Click", () =>
                 {
                     Debug.Log("Test click");
                 });

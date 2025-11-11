@@ -91,7 +91,7 @@ namespace LumosLib
         #region >--------------------------------------------------- DRAW : GROP
       
         
-        protected void DrawGroup(TestEditorGroup group, UnityAction<TestEditorGroup> contents)
+        protected void DrawGroup(TestEditorGroup group, UnityAction contents)
         {
             EditorGUILayout.LabelField(group.Title, new GUIStyle(EditorStyles.boldLabel)
             {
@@ -102,12 +102,12 @@ namespace LumosLib
                 active = { textColor = GroupTitleColor },
             });
             EditorGUILayout.BeginVertical("box");
-            contents?.Invoke(group);
+            contents?.Invoke();
             EditorGUILayout.EndVertical();
             EditorGUILayout.Space(GroupTitleFontSize);
         }
 
-        protected void DrawToggleGroup(TestEditorGroup group, ref bool isToggled, UnityAction<TestEditorGroup> contents)
+        protected void DrawToggleGroup(TestEditorGroup group, ref bool isToggled, UnityAction contents)
         {
             isToggled = EditorGUILayout.Foldout(isToggled, group.Title, true, new GUIStyle(EditorStyles.foldout)
             {
@@ -126,7 +126,7 @@ namespace LumosLib
             if (isToggled)
             {
                 EditorGUILayout.BeginVertical("box");
-                contents?.Invoke(group); 
+                contents?.Invoke(); 
                 EditorGUILayout.EndVertical();
                 EditorGUILayout.Space(GroupTitleFontSize);
             }
