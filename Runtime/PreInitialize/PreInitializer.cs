@@ -17,14 +17,14 @@ namespace LumosLib
         {
             base.Awake();
             
-            Config = Resources.Load<PreInitializeConfigSO>(Constant.PathPreInitializerConfig);
+            Config = Resources.Load<PreInitializeConfigSO>(Constant.PreInitializerConfig);
             if (Config == null)
             {
-                DebugUtil.LogWarning($" not found Reousrces/{Constant.PathPreInitializerConfig} "," INIT FAIL ");
+                DebugUtil.LogWarning($" not found Reousrces/{Constant.PreInitializerConfig} "," INIT FAIL ");
                 return;
             }
             
-            foreach (var mono in Config.PreInitializes)
+            foreach (var mono in Config.PreInitializeList)
             {
                 if (mono is IPreInitialize preInit)
                 {

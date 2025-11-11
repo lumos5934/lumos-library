@@ -25,7 +25,7 @@ namespace LumosLib
 
 
         [field: Header("PreInitialize")]
-        [field: SerializeField] public List<MonoBehaviour> PreInitializes { get; private set; } = new();
+        [field: SerializeField] public List<MonoBehaviour> PreInitializeList { get; private set; } = new();
 
 
         private void Awake()
@@ -33,13 +33,13 @@ namespace LumosLib
 #if UNITY_EDITOR
             SelectedTableType = TableType.None;
             
-            if (PreInitializes.Count == 0)
+            if (PreInitializeList.Count == 0)
             {
-                PreInitializes.Add(Resources.Load<DataManager>(nameof(DataManager)));
-                PreInitializes.Add(Resources.Load<PoolManager>(nameof(PoolManager)));
-                PreInitializes.Add(Resources.Load<AudioManager>(nameof(AudioManager)));
-                PreInitializes.Add(Resources.Load<UIManager>(nameof(UIManager)));
-                PreInitializes.Add(Resources.Load<ResourceManager>(nameof(ResourceManager)));
+                PreInitializeList.Add(Resources.Load<DataManager>(nameof(DataManager)));
+                PreInitializeList.Add(Resources.Load<PoolManager>(nameof(PoolManager)));
+                PreInitializeList.Add(Resources.Load<AudioManager>(nameof(AudioManager)));
+                PreInitializeList.Add(Resources.Load<UIManager>(nameof(UIManager)));
+                PreInitializeList.Add(Resources.Load<ResourceManager>(nameof(ResourceManager)));
             }
             
             if (AudioPlayerPrefab == null)
