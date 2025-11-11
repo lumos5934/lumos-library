@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Pool;
 
 namespace LumosLib
@@ -21,9 +22,9 @@ namespace LumosLib
 
         
         private const float DefaultVolume = 1;
+        private UnityAction<AudioPlayer> _onStop;
         private Coroutine _stopAsync;
         private AudioSource _audioSource;
-        private IAudioManager _audioManager;
         private bool _isPause;
         
         
@@ -40,20 +41,10 @@ namespace LumosLib
         
 
         #endregion
-        #region >--------------------------------------------------- INIT
-
-
-        public void SetAudioManager(IAudioManager audioManager)
-        {
-            _audioManager = audioManager;
-        }
-        
-        
-        #endregion
         #region >--------------------------------------------------- SET
         
         
-        public void Play(SoundAssetSO asset)
+        public void Play(SoundAssetSO asset, UnityAction<AudioPlayer> onStop)
         {
             _isPause = false;
             
@@ -62,6 +53,8 @@ namespace LumosLib
             _audioSource.volume = DefaultVolume + asset.VolumeFactor;
             _audioSource.loop = asset.IsLoop;
             _audioSource.Play();
+
+            _onStop = onStop;
 
             _stopAsync = StartCoroutine(StopAsync());
         }
@@ -73,12 +66,13 @@ namespace LumosLib
             Stop();
         }
         
-        public virtual void Stop()
+        public void Stop()
         {
             _isPause = false;
             
             _audioSource.Stop();
-            _audioManager.ReleaseAudioPlayer(this);
+            
+            _onStop?.Invoke(this);
         }
 
         public void Pause(bool enable)

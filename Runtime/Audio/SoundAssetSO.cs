@@ -7,8 +7,9 @@ namespace LumosLib
     {
         [field: SerializeField] public AudioMixerGroup MixerGroup { get; set; }
         [field: SerializeField] public AudioClip Clip { get; set; }
-        [field: SerializeField] public float VolumeFactor { get; set; }
-        [field: SerializeField] public bool IsLoop { get; set; }
 
+        [field: Range(0, 1)]
+        [field: SerializeField] public float VolumeFactor { get; set; } = 1;
+        [field: SerializeField] public bool IsLoop { get; set; }
     }
 }
