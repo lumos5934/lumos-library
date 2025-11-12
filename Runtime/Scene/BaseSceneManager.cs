@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace LumosLib
 {
@@ -10,11 +11,12 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            StartCoroutine(InitAsync());
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
 
         protected virtual void OnDestroy()
         {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
             Global.Unregister<T>();
         }
 
@@ -25,14 +27,24 @@ namespace LumosLib
 
         protected virtual void Init()
         {
-            Global.Register(this as T);
+            Global.Register((T)this);
         }
         
         private IEnumerator InitAsync() 
         {
-            yield return new WaitUntil(() => PreInitializer.Instance.Initialized);
+            
+            if (!Project.Initialized)
+            { 
+                yield return Project.InitAsync();
+            }
 
             Init();
+        }
+        
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            StartCoroutine(InitAsync());
+    
         }
 
 

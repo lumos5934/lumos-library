@@ -1,8 +1,10 @@
-﻿namespace LumosLib
+﻿using System.Collections;
+
+namespace LumosLib
 {
     public interface IPreInitialize
     {
         public int PreInitOrder { get; }
-        public bool PreInitialized { get; }
+        public IEnumerator InitAsync();
     }
 }

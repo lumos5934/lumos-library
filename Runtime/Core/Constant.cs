@@ -6,7 +6,7 @@
         
         
         public const string PathLumosLib = "Packages/com.lumos.library";
-        public const string PreInitializerConfig = "PreInitialize Config";
+        public const string ProjectConfig = "ProjectConfig";
         public const string PathGlobalHubTemplate = PathLumosLib + "/Editor/Templates/GlobalHub.txt";
         public const string PathSceneManagerTemplate = PathLumosLib + "/Editor/Templates/SceneManager.txt";
         public const string PathTestEditorTemplate = PathLumosLib + "/Editor/Templates/TestEditor.txt";

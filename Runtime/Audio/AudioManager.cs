@@ -1,72 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    public class AudioManager : MonoBehaviour, IPreInitialize, IAudioManager
+    public class AudioManager : BaseAudioManager
     {
-        #region >--------------------------------------------------- PROPERTIE
-
-        
-        public int PreInitOrder => (int)PreInitializeOrder.Audio;
-        public bool PreInitialized { get; private set; }
-        
-
-        #endregion
         #region >--------------------------------------------------- FIELD
       
         
         private readonly Dictionary<int, AudioPlayer> _bgmPlayers = new();
         private readonly HashSet<AudioPlayer> _activePlayers = new();
-        private readonly Dictionary<string, SoundAsset> _assetResources = new();
         
         private IPoolManager _poolManager;
-        private AudioPlayer _playerPrefab;
-        private AudioMixer _mixer;
         
         
         #endregion
-        #region >--------------------------------------------------- UNITY
+        #region >--------------------------------------------------- INIT
 
-        protected virtual void Awake()
-        {
-            _poolManager = Global.GetInternal<IPoolManager>();
-            
-            var resourceManager = Global.GetInternal<IResourceManager>();
-            var resources = resourceManager.LoadAll<SoundAsset>("");
-            
-            foreach (var resource in resources)
-            {
-                _assetResources[resource.name] = resource;
-            }
-
-            var preInitializeConfig = PreInitializer.Instance.Config;
-            
-            _playerPrefab = preInitializeConfig.AudioPlayerPrefab;
-            if (_playerPrefab == null)
-            {
-                DebugUtil.LogError(" wrong audio player path ", " INIT FAIL ");
-                return;
-            }
-            
-            _mixer = preInitializeConfig.Mixer;
-            
-            Global.Register<IAudioManager>(this);
-            
-            DontDestroyOnLoad(gameObject);
-
-            PreInitialized = true;
-        }
         
+        public override IEnumerator InitAsync()
+        {
+           yield return base.InitAsync();
+           
+           _poolManager = Global.GetInternal<IPoolManager>();
+        }
+
         #endregion
         #region >--------------------------------------------------- GET & SET 
        
-
-        public void SetVolume(string groupName, float volume)
-        {
-            _mixer.SetFloat(groupName, Mathf.Log10(volume) * 20f);
-        }
 
         private AudioPlayer GetBGMPlayer(int bgmType)
         {
@@ -87,7 +49,7 @@ namespace LumosLib
         #region >--------------------------------------------------- PLAY
 
 
-        public void PlayBGM(int bgmType, string assetName)
+        public override void PlayBGM(int bgmType, string assetName)
         {
             if (_assetResources.TryGetValue(assetName, out SoundAsset asset))
             {
@@ -102,7 +64,7 @@ namespace LumosLib
             }
         }
 
-        public void PlaySFX(string assetName)
+        public override void PlaySFX(string assetName)
         {
             if (_assetResources.TryGetValue(assetName, out SoundAsset asset))
             {
@@ -115,12 +77,12 @@ namespace LumosLib
         #region >--------------------------------------------------- STOP
 
 
-        public void StopBGM(int bgmType)
+        public override void StopBGM(int bgmType)
         {
             GetBGMPlayer(bgmType)?.Stop();
         }
         
-        public void StopSFXAll()
+        public override void StopSFXAll()
         {
             var temp = new List<AudioPlayer>(_activePlayers);
             
@@ -134,7 +96,7 @@ namespace LumosLib
         }
 
         
-        public void StopAll()
+        public override void StopAll()
         {
             var temp = new List<AudioPlayer>(_activePlayers);
             
@@ -171,12 +133,12 @@ namespace LumosLib
         #region >--------------------------------------------------- PAUSE
 
 
-        public void PauseBGM(int bgmType, bool enable)
+        public override void PauseBGM(int bgmType, bool enable)
         {
             GetBGMPlayer(bgmType)?.Pause(enable);
         }
         
-        public void PauseSFXAll(bool enable)
+        public override void PauseSFXAll(bool enable)
         {
             var temp = new List<AudioPlayer>(_activePlayers);
             
@@ -189,7 +151,7 @@ namespace LumosLib
             }
         }
 
-        public void PauseAll(bool enable)
+        public override void PauseAll(bool enable)
         {
             var temp = new List<AudioPlayer>(_activePlayers);
             

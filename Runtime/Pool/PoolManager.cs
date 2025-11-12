@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -6,16 +7,19 @@ namespace LumosLib
 {
     public class PoolManager : BasePoolManager
     {
-        #region >--------------------------------------------------- PROPERTIES
-
+        #region >--------------------------------------------------- INIT
         
-        public override bool PreInitialized { get; protected set; } = true;
-
+        
+        public override IEnumerator InitAsync()
+        {
+            yield break;
+        }
+        
         
         #endregion
         #region >--------------------------------------------------- CREATE
 
-
+     
         protected override ObjectPool<T> CreatePool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) 
         {
             var pool = new ObjectPool<T>(

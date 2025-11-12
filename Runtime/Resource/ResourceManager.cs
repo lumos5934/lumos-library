@@ -1,20 +1,24 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace LumosLib
 {
     public class ResourceManager : BaseResourceManager, IResourceManager
     {
-        #region  >--------------------------------------------------- PROPERTIES
-
-
-        public override bool PreInitialized { get; protected set; } = true;
+        #region  >--------------------------------------------------- INIT
+        
+        
+        public override IEnumerator InitAsync()
+        {
+            yield break;
+        }
         
         
         #endregion
         #region  >--------------------------------------------------- LOAD
+       
 
-
-        public T Load<T>(string path) where T : Object
+        public override T Load<T>(string path)
         {
             if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
@@ -24,7 +28,7 @@ namespace LumosLib
             return Resources.Load<T>(path);
         }
 
-        public T[] LoadAll<T>(string path) where T : Object
+        public override T[] LoadAll<T>(string path)
         {
             if (cahcedResources.TryGetValue(path, out var cacheResource))
             {
@@ -34,6 +38,7 @@ namespace LumosLib
             return Resources.LoadAll<T>(path);
         }
 
+        
         #endregion
     }
 }

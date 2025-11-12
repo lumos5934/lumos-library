@@ -4,61 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
-using UnityEngine;
 
 namespace LumosLib
 {
-    public class DataManager : MonoBehaviour, IPreInitialize, IDataManager
+    public class DataManager : BaseDataManager
     {
-        #region >--------------------------------------------------- PROPERTIE
-        
-        
-        public int PreInitOrder => (int)PreInitializeOrder.Data;
-        public bool PreInitialized { get; private set; }
-        
-        
-        #endregion
-        #region >--------------------------------------------------- FIELD
-        
-        
-        private Dictionary<Type, Dictionary<int, BaseData>> _loadDatas = new();
-        
-        
-        #endregion
-        #region >--------------------------------------------------- UNITY
-
-        
-        private void Awake()
-        {
-            StartCoroutine(LoadDataAsync());
-            
-            DontDestroyOnLoad(gameObject);
-            
-            Global.Register<IDataManager>(this);
-        }
-        
-
-        #endregion
         #region >--------------------------------------------------- INIT
         
         
-         private IEnumerator LoadDataAsync()
+        public override IEnumerator InitAsync()
         {
             var tableLoader = GetLoader();
-            if (tableLoader == null)
-            {
-                PreInitialized = true;
-                yield break;
-            }
+            if (tableLoader == null) yield break;
 
-            tableLoader.SetPath(PreInitializer.Instance.Config.TablePath);
+            tableLoader.SetPath(Project.Config.TablePath);
 
             yield return tableLoader.LoadJsonAsync();
-            if (tableLoader.Json == "")
-            {
-                PreInitialized = true;
-                yield break;
-            }
+            if (tableLoader.Json == "") yield break;
            
             
             var allSheets = JsonConvert.DeserializeObject<Dictionary<string, object[]>>(tableLoader.Json);
@@ -98,11 +60,9 @@ namespace LumosLib
                 }
                 else
                 {
-                    DebugUtil.LogWarning($" haven't sheet '{type.Name}'" , " LOAD FAIL ");
+                    Project.PrintInitFail($" haven't sheet '{type.Name}'");
                 }
             }
-            
-            PreInitialized = true;
         }
          
         
@@ -110,36 +70,11 @@ namespace LumosLib
         #region >--------------------------------------------------- GET
 
         
-        public List<T> GetAll<T>() where T : BaseData
-        {
-            if (_loadDatas.TryGetValue(typeof(T), out var dict))
-            {
-                return dict.Values.Cast<T>().ToList();
-            }
-
-            DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
-            return null;
-        }
-        
-        public T Get<T>(int id) where T : BaseData
-        {
-            if (_loadDatas.TryGetValue(typeof(T), out var dict))
-            {
-                if (dict.ContainsKey(id))
-                {
-                    return dict[id] as T;
-                }
-            }
-
-            DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
-            return null;
-        }
-        
         private BaseDataLoader GetLoader()
         {
-            return PreInitializer.Instance.Config.SelectedTableType switch
+            return Project.Config.DataTableType switch
             {
-                PreInitializeConfig.TableType.GoogleSheet => new GoogleSheetLoader(),
+                ProjectConfig.TableType.GoogleSheet => new GoogleSheetLoader(),
                 _ => null,
             };
         }
