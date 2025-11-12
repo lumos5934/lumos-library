@@ -1,16 +1,40 @@
-﻿using UnityEditor;
+﻿using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace LumosLib
 {
     public class EditorHierarchyMenu
     {
-        [MenuItem("GameObject/[ ✨Lumos Lib ]/Test", false, 0)]
+        [MenuItem("GameObject/[ ✨Lumos Lib ]/UI/Sequence Preset Trigger", false, 0)]
         private static void CreateCustomScriptObject(MenuCommand menuCommand)
         {
-            CreateResource(menuCommand, "AudioPlayer");
+            CreateNewObject(menuCommand, "SequencePresetTrigger", new []
+            {
+                typeof(RectTransform),
+                typeof(UISequencePresetTrigger),
+            });
         }
 
+
+        private static void CreateNewObject(MenuCommand menuCommand, string name, Type[] addComponents)
+        {
+            GameObject parent = menuCommand.context as GameObject;
+            GameObject createObject = new GameObject(name);
+            
+            if (parent != null)
+            {
+                GameObjectUtility.SetParentAndAlign(createObject, parent);
+            }
+
+            for (int i = 0; i < addComponents.Length; i++)
+            {
+                createObject.AddComponent(addComponents[i]);
+            }
+            
+            Selection.activeObject = createObject;
+        }
+        
         private static void CreateResource(MenuCommand menuCommand, string path)
         {
             var resource = Resources.Load<GameObject>(path);

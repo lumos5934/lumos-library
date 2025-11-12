@@ -32,15 +32,13 @@ namespace LumosLib
         [SerializeField, ShowIf("_isLoop")] private int _loopCount;
 
 
-        public abstract void InitComponent(GameObject targetObject);
-
-        public Tween GetTween()
+        public Tween GetTween(GameObject targetObject)
         {
-            var tween = SetTween()?.SetEase(_ease);
+            var tween = SetTween(targetObject)?.SetEase(_ease);
             
             return _isLoop ? tween.SetLoops(_loopCount, _loopType) : tween;
         }
         
-        protected abstract Tween SetTween();
+        protected abstract Tween SetTween(GameObject targetObject);
     }
 }

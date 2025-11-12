@@ -13,26 +13,15 @@ namespace LumosLib
         [SerializeField] private bool _useInitialScale;
         [SerializeField, ShowIf("_useInitialScale")] private Vector2 _initialScale;
 
-        private Transform _targetTransform;
-        
-        public override void InitComponent(GameObject targetObject)
-        {
-            _targetTransform = targetObject.transform;
-        }
 
-        protected override Tween SetTween()
+        protected override Tween SetTween(GameObject targetObject)
         {
-            if (_targetTransform != null)
+            if (_useInitialScale)
             {
-                if (_useInitialScale)
-                {
-                    _targetTransform.localScale = _initialScale;
-                }
-                
-                return _targetTransform.DOScale(_targetScale, Duration);
+                targetObject.transform.localScale = _initialScale;
             }
-            
-            return null;
+                
+            return targetObject.transform.DOScale(_targetScale, Duration);
         }
     }
 }
