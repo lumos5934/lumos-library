@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LumosLib
@@ -16,8 +17,8 @@ namespace LumosLib
         #region >--------------------------------------------------- FIELDS
 
 
-        protected Dictionary<int, UIBase> _ui = new();
-        protected Dictionary<int, UIBase> _globalUIPrefabs = new();
+        protected Dictionary<Type, UIBase> _ui = new();
+        protected Dictionary<Type, UIBase> _globalUIPrefabs = new();
         
 
 
@@ -31,10 +32,9 @@ namespace LumosLib
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)
             {
-                var key = uiGlobalPrefabs[i].ID;
                 var value = uiGlobalPrefabs[i];
 
-                _globalUIPrefabs[key] = value;
+                _globalUIPrefabs[uiGlobalPrefabs[i].GetType()] = value;
             }
             
             Global.Register<IUIManager>(this);
@@ -46,34 +46,45 @@ namespace LumosLib
         #region >--------------------------------------------------- GET & SET
 
 
-        public void SetEnable<T>(int id, bool enable) where T : UIBase
+        public void SetEnable<T>(bool enable) where T : UIBase
         {
-            var ui = Get<T>(id);
+            var ui = Get<T>();
 
             if (ui == null) return;
 
             ui.SetEnable(enable);
         }
-
-        public virtual T Get<T>(int id) where T : UIBase
+        
+        public void SetToggle<T>() where T : UIBase
         {
-            if (_ui.TryGetValue(id, out var ui))
+            var ui = Get<T>();
+
+            if (ui == null) return;
+
+            ui.SetEnable(!ui.IsEnabled);
+        }
+
+        public virtual T Get<T>() where T : UIBase
+        {
+            if (_ui.TryGetValue(typeof(T), out var ui))
             {
                 return ui as T;
             }
             else
             {
-                return CreateUI<T>(id);
+                return CreateUI<T>();
             }
         }
         
-        private T CreateUI<T>(int id) where T : UIBase
+        private T CreateUI<T>() where T : UIBase
         {
-            if (!_globalUIPrefabs.TryGetValue(id, out var prefab)) return null;
+            var type = typeof(T);
+            
+            if (!_globalUIPrefabs.TryGetValue(type, out var prefab)) return null;
 
             var createdUI = Instantiate(prefab, transform);
             
-            Register(createdUI);
+            _ui[type] = createdUI;
             
             createdUI.gameObject.SetActive(false);
             
@@ -81,16 +92,6 @@ namespace LumosLib
         }
 
 
-        #endregion
-        #region >--------------------------------------------------- REGISTER
-
-
-        protected void Register<T>(T ui)  where T : UIBase
-        {
-            _ui[ui.ID] = ui;
-        }
-
-        
         #endregion
     }
 }

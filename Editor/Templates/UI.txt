@@ -2,8 +2,8 @@
 
 public class #SCRIPTNAME# : UIBase
 {
-    public override int ID { get; }
     public override void SetEnable(bool enable)
     {
+        base.SetEnable(enable);
     }
 }

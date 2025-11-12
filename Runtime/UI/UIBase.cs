@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace LumosLib
 {
@@ -9,8 +8,7 @@ namespace LumosLib
     {
         #region >--------------------------------------------------- PROPERTIES
 
-
-        public abstract int ID { get; }
+        public bool IsEnabled { get; protected set; }
         protected Canvas Canvas => _canvas;
         protected CanvasGroup CanvasGroup => _canvasGroup;
 
@@ -38,7 +36,10 @@ namespace LumosLib
         #region >--------------------------------------------------- Set
 
 
-        public abstract void SetEnable(bool enable);
+        public virtual void SetEnable(bool enable)
+        {
+            IsEnabled = enable;
+        }
 
 
         #endregion
