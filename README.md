@@ -41,8 +41,8 @@
 ## ℹ️의존성
 
 - **Newtonsoft.Json (자동 설치)**
-- **DOTween (https://dotween.demigiant.com/)**
-- **Tri-Inspector (https://github.com/codewriter-packages/Tri-Inspector?tab=readme-ov-file)**
+- [DOTween](https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676?locale=ko-KR&srsltid=AfmBOorERKqVIWHnYtX-Ib3WRvr0KqT-k48G_H4SXEk8uU_Eczqg4U9v)
+- [Tri-Inspector](https://github.com/codewriter-packages/Tri-Inspector?tab=readme-ov-file)
 
 <br>
 <br>
