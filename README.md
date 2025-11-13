@@ -10,7 +10,7 @@
   ![Scene](https://github.com/user-attachments/assets/e5b8cb62-61d4-415b-b8ae-fc7da5f223cd)
 
 * 어느 씬에서나 BaseSceneManager 를 상속받는 오브젝트 배치
-* 이후 SceneManager 의 Init 을 통해 해당 씬에 대한 관리 & 동작 수행
+* 이후 BaseSceneManager 의 OnInitAsync을 오버라이드 구현을 통해 해당 씬에 대한 비동기 관리 & 동작 수행
 
 <br>
 <br>
