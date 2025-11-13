@@ -19,8 +19,9 @@
 ## ℹ️기능 설명
 
 
-* [ UI ](https://www.notion.so/UI-2a846d5965618054a5b0dffe119a4b10?source=copy_link)
 * [ Project Config ](https://www.notion.so/PreInitialize-2a846d59656180cf9235d2e1f2633f0c?source=copy_link)
+* [ Pre-Initialize ](https://www.notion.so/Pre-Initialize-2aa46d596561807bb6dde336babbb7bd?source=copy_link)
+* [ UI ](https://www.notion.so/UI-2a846d5965618054a5b0dffe119a4b10?source=copy_link)
 * [ Scene ](https://www.notion.so/Scene-2a846d59656180e1a447d8674ab3b8d2?source=copy_link)
 * [ Global ](https://www.notion.so/Global-2a846d596561803f8199c6cdb734fbdc?source=copy_link)
 * [ TestEditor ](https://www.notion.so/Test-Editor-2a846d596561801bb3abd2e4f4f57ebf?source=copy_link)
