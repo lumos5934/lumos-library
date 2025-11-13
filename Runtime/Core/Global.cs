@@ -22,20 +22,26 @@ namespace LumosLib
 
         public static void Unregister<T>() where T : class
         {
-            var type = typeof(T);
-            
-            if (_services.ContainsKey(type))
-            {
-                _services.Remove(type);
-            }
+            _services.Remove(typeof(T));
         }
         
 
         #endregion
         #region >--------------------------------------------------- GET
 
-        
+        //for project
         public static T Get<T>() where T : class
+        {
+            return GetService<T>();
+        }
+        
+        //for package
+        internal static T GetInternal<T>() where T : class
+        {
+            return GetService<T>();
+        }
+
+        private static T GetService<T>() where T : class
         {
             if (_services.TryGetValue(typeof(T), out var service))
             {
@@ -43,16 +49,6 @@ namespace LumosLib
             }
 
             DebugUtil.LogWarning($"{typeof(T)}", " NOT REGISTERED ");
-            return default;
-        }
-        
-        internal static T GetInternal<T>() where T : class
-        {
-            if (_services.TryGetValue(typeof(T), out var service))
-            {
-                return (T)service;
-            }
-            
             return null;
         }
         

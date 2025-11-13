@@ -26,14 +26,6 @@ namespace LumosLib
         
         protected void Awake()
         {
-            var contains = Global.GetInternal<IPoolManager>();
-            
-            if (contains != null)
-            {
-                var containsMono =  contains as MonoBehaviour;
-                Destroy(containsMono?.gameObject);
-            }
-            
             Global.Register<IPoolManager>(this);
             
             DontDestroyOnLoad(gameObject);

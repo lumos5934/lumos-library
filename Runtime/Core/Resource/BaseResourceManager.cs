@@ -25,14 +25,6 @@ namespace LumosLib
 
         public virtual void Awake()
         {
-            var contains = Global.GetInternal<IResourceManager>();
-            
-            if (contains != null)
-            {
-                var containsMono =  contains as MonoBehaviour;
-                Destroy(containsMono?.gameObject);
-            }
-            
             Global.Register<IResourceManager>(this);
             
             DontDestroyOnLoad(gameObject);

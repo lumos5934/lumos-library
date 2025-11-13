@@ -28,14 +28,6 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            var contains = Global.GetInternal<IAudioManager>();
-            
-            if (contains != null)
-            {
-                var containsMono =  contains as MonoBehaviour;
-                Destroy(containsMono?.gameObject);
-            }
-            
             Global.Register<IAudioManager>(this);
             
             DontDestroyOnLoad(gameObject);
