@@ -11,10 +11,10 @@ namespace LumosLib
         #region >--------------------------------------------------- SCRIPT
         
         
-        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/GlobalHub", false, int.MinValue)]
-        public static void CreateGlobalHubScript()
+        [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/Global", false, int.MinValue)]
+        public static void CreateGlobalScript()
         {
-            CreateScript("GlobalHub.cs", File.ReadAllText(Constant.PathGlobalHubTemplate));
+            CreateScript("Global.cs", File.ReadAllText(Constant.PathGlobalHubTemplate));
         }
         
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Script/SceneManager", false, int.MinValue)]
