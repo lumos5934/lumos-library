@@ -1,10 +1,10 @@
 ﻿using LumosLib;
 
-public static class GlobalHub
+public static class Global
 {
-    public static IUIManager UI => Global.Get<IUIManager>();
-    public static IAudioManager Audio => Global.Get<IAudioManager>();
-    public static IDataManager Data => Global.Get<IDataManager>();
-    public static IResourceManager Resource => Global.Get<IResourceManager>();
-    public static IPoolManager Pool => Global.Get<IPoolManager>();
+    public static IUIManager UI => GlobalService.Get<IUIManager>();
+    public static IAudioManager Audio => GlobalService.Get<IAudioManager>();
+    public static IDataManager Data => GlobalService.Get<IDataManager>();
+    public static IResourceManager Resource => GlobalService.Get<IResourceManager>();
+    public static IPoolManager Pool => GlobalService.Get<IPoolManager>();
 }
