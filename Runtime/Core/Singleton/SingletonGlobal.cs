@@ -2,7 +2,7 @@
 
 namespace LumosLib
 {
-    public abstract class SingletonGlobal<T> : MonoBehaviour where T : SingletonGlobal<T>
+    public class SingletonGlobal<T> : MonoBehaviour where T : MonoBehaviour
     {
         public static T Instance
         {

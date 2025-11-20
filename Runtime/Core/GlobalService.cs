@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace LumosLib
 {
@@ -17,11 +18,15 @@ namespace LumosLib
         
         public static void Register<T>(T service) where T : class
         {
+            DestroyOldMonoService<T>();
+            
             _services[typeof(T)] = service;
         }
 
         public static void Unregister<T>() where T : class
         {
+            DestroyOldMonoService<T>();
+            
             _services.Remove(typeof(T));
         }
         
@@ -50,6 +55,22 @@ namespace LumosLib
 
             DebugUtil.LogWarning($"{typeof(T)}", " NOT REGISTERED ");
             return null;
+        }
+        
+        
+        #endregion
+        #region >--------------------------------------------------- DESTROY
+
+
+        private static void DestroyOldMonoService<T>() where T : class
+        {
+            if (_services.TryGetValue(typeof(T), out var oldService))
+            {
+                if (oldService is MonoBehaviour monoBehaviour)
+                {
+                    UnityEngine.Object.Destroy(monoBehaviour.gameObject);
+                }
+            }
         }
         
         

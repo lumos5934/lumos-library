@@ -117,7 +117,7 @@ namespace LumosLib
         
         private static void InstantiatePreloadObjects(ProjectConfig config)
         {
-            //MEMO : Add LumosLib Object
+            //MEMO : Add LumosLib Base Object
             InstantiatePackageResource<DataManager>();
             InstantiatePackageResource<ResourceManager>();
             InstantiatePackageResource<PoolManager>();
