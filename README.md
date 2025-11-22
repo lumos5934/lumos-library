@@ -30,6 +30,7 @@
 * [ Audio ](https://www.notion.so/Audio-2a846d596561808cbc56d22734de8ead?source=copy_link)
 * [ Data ](https://www.notion.so/Data-2a846d596561802ca1f7fa96503e7c5e?source=copy_link)
 * [ TestEditor ](https://www.notion.so/Test-Editor-2a846d596561801bb3abd2e4f4f57ebf?source=copy_link)
+* [ Event ](https://www.notion.so/Event-2b346d59656180918aeddf5a20c0d350?source=copy_link)
 
 ### DOTween
 * [ Tween Preset ](https://www.notion.so/Tween-Preset-2aa46d596561805a81f0d38f690ea271?source=copy_link)
