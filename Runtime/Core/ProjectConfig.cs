@@ -22,22 +22,10 @@ namespace LumosLib
         [field: PropertySpace(20f)]
         [field: Title("Audio")]
         [field: SerializeField] public AudioMixer Mixer { get; private set; }
-        [field: SerializeField] public AudioPlayer AudioPlayerPrefab { get; private set; }
 
 
         [field: PropertySpace(20f)]
         [field: Title("Preload")]
         [field: SerializeField] public List<GameObject> PreloadObjects { get; private set; } = new();
-
-
-        private void OnEnable()
-        {
-#if UNITY_EDITOR
-            if (AudioPlayerPrefab == null)
-            {
-                AudioPlayerPrefab = Resources.Load<AudioPlayer>(nameof(AudioPlayer));
-            }
-#endif
-        }
     }
 }
