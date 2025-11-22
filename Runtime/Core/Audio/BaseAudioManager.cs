@@ -5,7 +5,7 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
-    public abstract class BaseAudioManager : MonoBehaviour, IPreInitialize, IAudioManager
+    public abstract class BaseAudioManager : MonoBehaviour, IPreInitializer, IAudioManager
     {
         #region >--------------------------------------------------- PROPERTIE
 
@@ -17,8 +17,8 @@ namespace LumosLib
         #region >--------------------------------------------------- FIELD
         
         
+        [SerializeField] protected AudioPlayer _playerPrefab;
         protected readonly Dictionary<string, SoundAsset> _assetResources = new();
-        protected AudioPlayer _playerPrefab;
         protected AudioMixer _mixer;
         
         
@@ -48,16 +48,9 @@ namespace LumosLib
                 _assetResources[resource.name] = resource;
             }
 
-            var config = Project.Config;
+            _mixer =  Project.Config.Mixer;
             
-            _playerPrefab = config.AudioPlayerPrefab;
-            if (_playerPrefab == null)
-            {
-                Project.PrintInitFail(" wrong audio player path ");
-                yield break;
-            }
-            
-            _mixer = config.Mixer;
+            yield break;
         }
         
         
