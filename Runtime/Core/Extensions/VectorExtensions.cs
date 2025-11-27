@@ -96,6 +96,19 @@ namespace LumosLib
         {
             return Vector2.Distance(a, b);
         }
+
+        
+        public static Vector2 DirectionToType(this Vector2 a, DirectionType direction)
+        {
+            return direction switch
+            {
+                DirectionType.Left  => Vector2.left,
+                DirectionType.Right => Vector2.right,
+                DirectionType.Up    => Vector2.up,
+                DirectionType.Down  => Vector2.down,
+                _ => Vector2.zero
+            };
+        }
         
         
         #endregion
