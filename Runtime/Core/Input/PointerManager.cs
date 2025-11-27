@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 
@@ -12,6 +13,7 @@ namespace LumosLib
 
         
         public int PreInitOrder => (int)PreInitializeOrder.Pointer;
+        public bool IsOverUI { get; private set; } 
 
 
         #endregion
@@ -40,6 +42,11 @@ namespace LumosLib
             GlobalService.Register(this);
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        protected virtual void LateUpdate()
+        {
+            IsOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
 
