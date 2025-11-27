@@ -19,7 +19,6 @@ namespace LumosLib
 
     
         private Vector2 _pointerPos;
-        private Vector2 _pointerDeltaPos;
         private Coroutine _pointerClickCoroutine;
         
         
@@ -63,8 +62,7 @@ namespace LumosLib
             var pointerPosRef = Project.Config.PointerMoveActionReference;
             if (pointerPosRef != null)
             {
-                pointerPosRef.action.performed += PerformedPointerMove;
-                pointerPosRef.action.canceled += CanceledPointerMove;
+                pointerPosRef.action.performed += context =>  _pointerPos =  context.ReadValue<Vector2>();
                 pointerPosRef.action.actionMap.Enable(); 
             }
             
@@ -82,10 +80,6 @@ namespace LumosLib
             return _pointerPos;
         }
         
-        public Vector2 GetDeltaPos()
-        {
-            return _pointerDeltaPos;
-        }
         
         
         #endregion
@@ -115,20 +109,7 @@ namespace LumosLib
                 OnHold?.Invoke(_pointerPos);
             }
         }
-
-
-        private void PerformedPointerMove(InputAction.CallbackContext context)
-        {
-            var pointerPos = context.ReadValue<Vector2>();
-            _pointerDeltaPos = pointerPos - _pointerPos;
-            _pointerPos = pointerPos;
-        }
-
-        private void CanceledPointerMove(InputAction.CallbackContext context)
-        {
-            _pointerDeltaPos = _pointerPos;
-        }
-
+        
         
         #endregion
     }
