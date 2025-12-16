@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LumosLib
 {
-    public class TutorialManager : MonoBehaviour, IPreInitializable
+    public class TutorialManager : MonoBehaviour, IPreInitializable, ITutorialManager
     {
         #region >--------------------------------------------------- FIELD
 
@@ -35,7 +35,7 @@ namespace LumosLib
     
         public IEnumerator InitAsync()
         {
-            GlobalService.Register(this);
+            GlobalService.Register<ITutorialManager>(this);
             DontDestroyOnLoad(gameObject);
         
             yield break;
