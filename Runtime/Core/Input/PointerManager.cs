@@ -7,22 +7,18 @@ using UnityEngine.InputSystem;
 
 namespace LumosLib
 {
-    public class PointerManager : MonoBehaviour, IPreInitializable
+    public class PointerManager : MonoBehaviour, IPreInitializable, IPointerManager
     {
-        #region >--------------------------------------------------- PROPERTIE
-        
-
-        public bool IsOverUI { get; private set; } 
-
-
-        #endregion
         #region >--------------------------------------------------- FIELD
 
 
-        [SerializeField] private InputActionReference _pointerPosActionReference;
-        [SerializeField] private InputActionReference _pointerClickActionReference;
-        private Vector2 _pointerPos;
-        private Coroutine _pointerClickCoroutine;
+        [SerializeField] private InputActionReference _posInputReference;
+        [SerializeField] private InputActionReference _clickInputReference;
+
+        private bool _isOverUI;
+        private Vector2 _pos;
+        private GameObject _scanObj;
+        private Coroutine _clickCoroutine;
         
         
         #endregion
@@ -38,9 +34,9 @@ namespace LumosLib
         #region >--------------------------------------------------- UNITY
         
         
-        protected virtual void LateUpdate()
+        private void LateUpdate()
         {
-            IsOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+            _isOverUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
 
@@ -48,11 +44,9 @@ namespace LumosLib
         #region >--------------------------------------------------- INIT
         
         
-        
         public IEnumerator InitAsync()
         {
-            var pointerClickRef = _pointerClickActionReference;
-            
+            var pointerClickRef = _clickInputReference;
             if (pointerClickRef != null)
             {
                 pointerClickRef.action.started += StartedPointerDown;
@@ -60,10 +54,10 @@ namespace LumosLib
                 pointerClickRef.action.actionMap.Enable(); 
             }
             
-            var pointerPosRef = _pointerPosActionReference;
+            var pointerPosRef = _posInputReference;
             if (pointerPosRef != null)
             {
-                //pointerPosRef.action.performed += context =>  _pointerPos =  context.ReadValue<Vector2>();
+                pointerPosRef.action.performed += SetPointerPos;
                 pointerPosRef.action.actionMap.Enable(); 
             }
             
@@ -75,34 +69,62 @@ namespace LumosLib
         
         
         #endregion
-        #region >--------------------------------------------------- GET
-        
+        #region >--------------------------------------------------- SET
+
+
+        public bool GetOverUI()
+        {
+            return _isOverUI;
+        }
         
         public Vector2 GetPos()
         {
-            return _pointerPos;
+            return _pos;
+        }
+
+        public GameObject GetScanObject(bool ignoreUI = true)
+        {
+            if (GetOverUI() && !ignoreUI)  return null;
+
+            var cam = Camera.main;
+            if (cam == null) return null;
+            
+            Vector2 worldPos = cam.ScreenToWorldPoint(Input.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                Debug.Log(hit.collider.name);
+            }
+            
+            return hit.collider != null ? hit.collider.gameObject : null;
+        }
+        
+        private void SetPointerPos(InputAction.CallbackContext context)
+        {
+            _pos = context.ReadValue<Vector2>();
         }
         
         
         #endregion
-        #region >--------------------------------------------------- POINTER
+        #region >--------------------------------------------------- CORE
 
-
+        
         private void StartedPointerDown(InputAction.CallbackContext context)
         {
+            _clickCoroutine = StartCoroutine(PointerClickCoroutine());
+            
             OnDown?.Invoke();
-        
-            _pointerClickCoroutine = StartCoroutine(PointerClickCoroutine());
         }
         
         private void CanceledPointerDown(InputAction.CallbackContext context)
         {
-            OnUp?.Invoke();
-
-            if (_pointerClickCoroutine != null)
+            if (_clickCoroutine != null)
             {
-                StopCoroutine(_pointerClickCoroutine);
+                StopCoroutine(_clickCoroutine);
             }
+
+            OnUp?.Invoke();
         }
 
         private IEnumerator PointerClickCoroutine()
