@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TriInspector;
 
 namespace LumosLib
 {
@@ -10,10 +11,11 @@ namespace LumosLib
         #region >--------------------------------------------------- FIELDS
 
         
-        [SerializeField] private BaseResourceManager _resourceManager;
-        
         private Dictionary<Type, UIBase> _createdUIs = new();
         private Dictionary<Type, UIBase> _prefabUIs = new();
+        
+        [Title("REQUIREMENT")]
+        [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IResourceManager")] private IResourceManager _resourceManager;
 
 
         #endregion
@@ -22,6 +24,13 @@ namespace LumosLib
         
         public IEnumerator InitAsync()
         {
+            _resourceManager = GlobalService.Get<IResourceManager>();
+            if (_resourceManager == null)
+            {
+                Project.PrintInitFail("IResourceManager is null");
+                yield break;
+            }
+            
             var uiGlobalPrefabs =  _resourceManager.LoadAll<UIBase>("");
 
             for (int i = 0; i < uiGlobalPrefabs.Length; i++)

@@ -5,14 +5,25 @@ using UnityEngine.Pool;
 
 namespace LumosLib
 {
-    public class PoolManager : BasePoolManager
+    public class PoolManager : MonoBehaviour, IPreInitializable, IPoolManager
     {
+        #region >--------------------------------------------------- FIELD
+ 
+        
+        private Dictionary<string, object> _pools = new();
+        private Dictionary<string, HashSet<MonoBehaviour>> _activeObjects = new();
+
+        
+        #endregion
         #region >--------------------------------------------------- INIT
         
         
-        public override IEnumerator InitAsync()
+        public IEnumerator InitAsync()
         {
-            yield return base.InitAsync();
+            GlobalService.Register<IPoolManager>(this);
+            DontDestroyOnLoad(gameObject);
+
+            yield break;
         }
         
         
@@ -20,7 +31,7 @@ namespace LumosLib
         #region >--------------------------------------------------- CREATE
 
      
-        protected override ObjectPool<T> CreatePool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) 
+        private ObjectPool<T> CreatePool<T>(T prefab, int defaultCapacity = Constant.PoolDefaultCapacity, int maxSize = Constant.PoolMaxSize) where T : MonoBehaviour, IPoolable
         {
             var pool = new ObjectPool<T>(
                 createFunc: () =>
@@ -52,7 +63,7 @@ namespace LumosLib
                 maxSize: maxSize
             );
 
-            pools.Add(prefab.name, pool);
+            _pools.Add(prefab.name, pool);
             return pool;
         }
 
@@ -61,9 +72,9 @@ namespace LumosLib
         #region >--------------------------------------------------- GET
 
 
-        protected override ObjectPool<T> GetPool<T>(string key)
+        private ObjectPool<T> GetPool<T>(string key)  where T : MonoBehaviour, IPoolable
         {
-            if (pools.TryGetValue(key, out var pool))
+            if (_pools.TryGetValue(key, out var pool))
             {
                 return pool as ObjectPool<T>;
             }
@@ -71,19 +82,19 @@ namespace LumosLib
             return null;
         }
 
-        public override T Get<T>(T prefab)
+        public T Get<T>(T prefab)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.name;
             var pool = GetPool<T>(key) ?? CreatePool(prefab);
 
             var obj = pool.Get();
 
-            if (!activeObjects.ContainsKey(key))
+            if (!_activeObjects.ContainsKey(key))
             {
-                activeObjects[key] = new HashSet<MonoBehaviour>();
+                _activeObjects[key] = new HashSet<MonoBehaviour>();
             }
 
-            activeObjects[key].Add(obj);
+            _activeObjects[key].Add(obj);
 
             return obj;
         }
@@ -93,30 +104,30 @@ namespace LumosLib
         #region >--------------------------------------------------- REALEASE
 
 
-        public override void Release<T>(T obj)
+        public void Release<T>(T obj)  where T : MonoBehaviour, IPoolable
         {
             var key = obj.name;
 
             GetPool<T>(key)?.Release(obj);
 
-            if (activeObjects.TryGetValue(key, out var objs))
+            if (_activeObjects.TryGetValue(key, out var objs))
             {
                 objs.Remove(obj);
             }
         }
         
-        public override void ReleaseAll<T>(T prefab)
+        public void ReleaseAll<T>(T prefab)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.name;
 
-            if (activeObjects.TryGetValue(key, out var objs))
+            if (_activeObjects.TryGetValue(key, out var objs))
             {
                 foreach (var obj in objs)
                 {
                     GetPool<T>(key)?.Release(obj as T);
                 }
                
-                activeObjects.Remove(key);
+                _activeObjects.Remove(key);
             }
         }
    
@@ -125,7 +136,7 @@ namespace LumosLib
         #region >--------------------------------------------------- DESTROY
 
         
-        public override void DestroyAll<T>(T prefab)
+        public void DestroyAll<T>(T prefab)  where T : MonoBehaviour, IPoolable
         {
             var key = prefab.name;
 
@@ -138,17 +149,17 @@ namespace LumosLib
                 }
                 
                 pool.Dispose();
-                pools.Remove(key);
+                _pools.Remove(key);
             }
             
-            if (activeObjects.TryGetValue(key, out var objs))
+            if (_activeObjects.TryGetValue(key, out var objs))
             {
                 foreach (var obj in objs)
                 {
                     Destroy(obj.gameObject);
                 }
 
-                activeObjects.Remove(key);
+                _activeObjects.Remove(key);
             }
         }
         

@@ -136,7 +136,7 @@ namespace LumosLib
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Data", false, int.MinValue)]
         public static void CreateDataManagerPrefab()
         {
-            CreatePrefab<DataManager>();
+            CreatePrefab<DataTableManager>();
         }
         
         [MenuItem("Assets/Create/[ ✨Lumos Lib ]/Prefab/Managers/Pool", false, int.MinValue)]

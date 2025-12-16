@@ -1,26 +1,38 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LumosLib
 {
-    public class ResourceManager : BaseResourceManager, IResourceManager
+    public class ResourceManager : MonoBehaviour, IPreInitializable, IResourceManager
     {
+        #region  >--------------------------------------------------- FIELD
+
+
+        private Dictionary<string, object> _cahcedResources = new();
+        
+        
+        #endregion
         #region  >--------------------------------------------------- INIT
         
         
-        public override IEnumerator InitAsync()
+        public IEnumerator InitAsync()
         {
-            yield return base.InitAsync();
+            GlobalService.Register<IResourceManager>(this);
+            DontDestroyOnLoad(gameObject);
+            
+            yield break;
         }
+
         
         
         #endregion
         #region  >--------------------------------------------------- LOAD
        
 
-        public override T Load<T>(string path)
+        public T Load<T>(string path) where T : Object
         {
-            if (cahcedResources.TryGetValue(path, out var cacheResource))
+            if (_cahcedResources.TryGetValue(path, out var cacheResource))
             {
                 return cacheResource as T;
             }
@@ -28,9 +40,9 @@ namespace LumosLib
             return Resources.Load<T>(path);
         }
 
-        public override T[] LoadAll<T>(string path)
+        public T[] LoadAll<T>(string path) where T : Object
         {
-            if (cahcedResources.TryGetValue(path, out var cacheResource))
+            if (_cahcedResources.TryGetValue(path, out var cacheResource))
             {
                 return cacheResource as T[];
             }

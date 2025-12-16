@@ -4,18 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
+using TriInspector;
+using UnityEngine;
 
 namespace LumosLib
 {
-    public class DataManager : BaseDataManager
+    public class DataTableManager : MonoBehaviour, IPreInitializable, IDataTableManager
     {
+        #region >--------------------------------------------------- FIELD
+        
+       
+        [SerializeField] private DataTableType _dataTableType;
+        [SerializeField, HideIf("_dataTableType", DataTableType.None)] private string _tablePath;
+        
+        private Dictionary<Type, Dictionary<int, BaseData>> _loadDatas = new();
+        
+        
+        #endregion
         #region >--------------------------------------------------- INIT
         
         
-        public override IEnumerator InitAsync()
+        public IEnumerator InitAsync()
         {
-            yield return base.InitAsync();
-            
             var tableLoader = GetLoader();
             if (tableLoader == null) yield break;
 
@@ -65,6 +75,9 @@ namespace LumosLib
                     Project.PrintInitFail($" haven't sheet '{type.Name}'");
                 }
             }
+            
+            GlobalService.Register<IDataTableManager>(this);
+            DontDestroyOnLoad(gameObject);
         }
          
         
@@ -80,8 +93,33 @@ namespace LumosLib
                 _ => null,
             };
         }
-        
 
+        public List<T> GetAll<T>() where T : BaseData
+        {
+            if (_loadDatas.TryGetValue(typeof(T), out var dict))
+            {
+                return dict.Values.Cast<T>().ToList();
+            }
+
+            DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
+            return null;
+        }
+        
+        public T Get<T>(int id) where T : BaseData
+        {
+            if (_loadDatas.TryGetValue(typeof(T), out var dict))
+            {
+                if (dict.TryGetValue(id, out var value))
+                {
+                    return value as T;
+                }
+            }
+
+            DebugUtil.LogError($" haven't data '{typeof(T).Name}' ", " GET FAIL ");
+            return null;
+        }
+        
+        
         #endregion
     }
 }
