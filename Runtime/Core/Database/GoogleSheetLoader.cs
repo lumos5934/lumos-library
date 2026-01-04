@@ -4,9 +4,9 @@ using UnityEngine.Networking;
 
 namespace LumosLib
 {
-    public class GoogleSheetLoader : BaseDataLoader
+    public class GoogleSheetLoader
     {
-        public override IEnumerator LoadJsonAsync()
+        /*public override IEnumerator LoadJsonAsync()
         {
             using (UnityWebRequest www = UnityWebRequest.Get(_path))
             {
@@ -20,7 +20,7 @@ namespace LumosLib
             
                 Json = www.downloadHandler.text;
             }
-        }
+        }*/
     }
 }
 
