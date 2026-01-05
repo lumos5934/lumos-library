@@ -52,6 +52,8 @@ namespace LumosLib
         
         public async Task SaveAsync<T>(T data) where T : ISaveData
         {
+            if (_saveStorage == null) return;
+            
             var type = typeof(T);
 
             if (!_saveDataDict.ContainsKey(type))
@@ -64,6 +66,8 @@ namespace LumosLib
         
         public async Task<T> LoadAsync<T>() where T : ISaveData
         {
+            if (_saveStorage == null) return default;
+            
             if (_saveDataDict.ContainsKey(typeof(T)))
             {
                 return await _saveStorage.LoadAsync<T>();
