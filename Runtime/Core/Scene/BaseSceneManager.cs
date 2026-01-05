@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
 namespace LumosLib
 {
@@ -11,40 +9,12 @@ namespace LumosLib
 
         protected virtual void Awake()
         {
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            GlobalService.Register((T)this);
         }
-        
 
         protected virtual void OnDestroy()
         {
             GlobalService.Unregister<T>();
-            
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
-
-
-        #endregion
-        #region --------------------------------------------------- INIT
-
-
-        protected virtual void OnInitAsync()
-        {
-            GlobalService.Register((T)this);
-        }
-        
-        private IEnumerator InitAsync() 
-        {
-            if (!Project.Initialized)
-            { 
-                yield return Project.InitAsync();
-            }
-
-            OnInitAsync();
-        }
-        
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-        {
-            StartCoroutine(InitAsync());
         }
 
 

@@ -43,16 +43,17 @@ namespace LumosLib
             await File.WriteAllTextAsync(_path, json);
         }
 
-        public async Task<T> LoadAsync<T>() where T : ISaveData
+        public Task<T> LoadAsync<T>() where T : ISaveData
         {
-            if (!File.Exists(_path)) return default;
+            if (!File.Exists(_path))  
+                return Task.FromResult<T>(default);
             
             JObject root = LoadRoot();
             string key = typeof(T).Name;
 
             if (!root.TryGetValue(key, out JToken token)) return default;
               
-            return token.ToObject<T>();
+            return Task.FromResult(token.ToObject<T>());
         }
         
         private JObject LoadRoot()

@@ -14,7 +14,9 @@ namespace LumosLib
 
         private static void OnEditorFullyLoaded()
         {
-            if (Resources.Load<ProjectConfig>(Constant.ProjectConfig) == null)
+            var name = nameof(LumosLibSetting);
+            
+            if (Resources.Load<LumosLibSetting>(name) == null)
             {
                 string resourcesDir = Path.Combine(Application.dataPath, "Resources");
                 if (!Directory.Exists(resourcesDir))
@@ -22,9 +24,9 @@ namespace LumosLib
                     Directory.CreateDirectory(resourcesDir);
                 }
 
-                var asset = ScriptableObject.CreateInstance<ProjectConfig>();
+                var asset = ScriptableObject.CreateInstance<LumosLibSetting>();
         
-                string assetPath = $"Assets/Resources/{nameof(ProjectConfig)}.asset";
+                string assetPath = $"Assets/Resources/{name}.asset";
 
                 AssetDatabase.CreateAsset(asset, assetPath);
                 AssetDatabase.SaveAssets();

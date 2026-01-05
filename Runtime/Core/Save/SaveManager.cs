@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TriInspector;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace LumosLib
     {
         #region >--------------------------------------------------- FIELD
 
+        
         [SerializeField] private SaveStorageType _saveType;
         [SerializeField, ShowIf("_saveType", SaveStorageType.Json)] private string _folderPath;
         [SerializeField, ShowIf("_saveType", SaveStorageType.Json)] private string _fileName;
@@ -18,21 +20,12 @@ namespace LumosLib
         
         private readonly Dictionary<Type, ISaveData> _saveDataDict = new();
         
-        #endregion
-        #region >--------------------------------------------------- UNITY
-        
-        
-        private void Awake()
-        {
-            GlobalService.Register<ISaveManager>(this);
-        }
-        
         
         #endregion
         #region >--------------------------------------------------- INIT
         
         
-        public IEnumerator InitAsync(Action<bool> onComplete)
+        public UniTask<bool> InitAsync()
         {
             switch (_saveType)
             {
@@ -40,9 +33,9 @@ namespace LumosLib
                     _saveStorage = new JsonSaveStorage(_folderPath, _fileName);
                     break;
             }
-        
-            onComplete?.Invoke(true);
-            yield break;
+
+            GlobalService.Register<ISaveManager>(this);
+            return UniTask.FromResult(true);
         }
         
         

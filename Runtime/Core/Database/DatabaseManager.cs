@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using BansheeGz.BGDatabase;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace LumosLib
@@ -16,23 +16,13 @@ namespace LumosLib
         
         
         #endregion
-        #region >--------------------------------------------------- UNITY
-
-
-        private void Awake()
-        {
-            GlobalService.Register<IDatabaseManager>(this);
-        }
-        
-        
-        #endregion
         #region >--------------------------------------------------- INIT
 
         
-        public IEnumerator InitAsync(Action<bool> onComplete)
+        public UniTask<bool> InitAsync()
         {
-            onComplete?.Invoke(true);
-            yield break;
+            GlobalService.Register<IDatabaseManager>(this);
+            return UniTask.FromResult(true);
         }
          
         
