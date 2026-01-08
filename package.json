@@ -1,12 +1,12 @@
 {
-  "name": "com.lumos.library",
+  "name": "com.lumos.core",
   "version": "1.0.0",
-  "displayName": "Lumos Library",
+  "displayName": "Lumos Core",
   "description": "description",
   "unity": "2021.2",
   "author": {
     "name": "Lumos",
-    "email": "lumos.wge@gmail.com",
+    "email": "lumos5934@gmail.com",
     "url": ""
   },
   "dependencies": {
