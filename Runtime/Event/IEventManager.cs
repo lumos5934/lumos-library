@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lumos.Core
+namespace LumosLib
 {
     public interface IEventManager
     {

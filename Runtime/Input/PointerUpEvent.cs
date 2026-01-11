@@ -1,4 +1,4 @@
-﻿namespace Lumos.Core
+﻿namespace LumosLib
 {
     public struct PointerUpEvent : IGameEvent { }
 }

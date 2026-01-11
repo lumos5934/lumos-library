@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Lumos.Core
+namespace LumosLib
 {
     public class SaveManager : MonoBehaviour, IPreInitializable, ISaveManager
     {

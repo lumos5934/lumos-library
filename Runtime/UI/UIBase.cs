@@ -1,7 +1,7 @@
-﻿using Lumos.Core;
+﻿using LumosLib;
 using UnityEngine;
 
-namespace Lumos.Core
+namespace LumosLib
 {
     [RequireComponent(typeof(Canvas))]
     [RequireComponent(typeof(CanvasGroup))]

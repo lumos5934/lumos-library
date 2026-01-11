@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Lumos.Core
+namespace LumosLib
 {
     public static class EditorInitializer
     {
