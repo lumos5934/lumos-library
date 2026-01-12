@@ -33,7 +33,7 @@ namespace LumosLib
         private static bool _isInitialized;
 
         private static UniTaskCompletionSource _initBarrier;
-        private static LumosSettings _settings;
+        private static LumosLibSettings _libSettings;
         
 
         #endregion
@@ -45,12 +45,12 @@ namespace LumosLib
         {
             _initBarrier = new UniTaskCompletionSource();
             
-            _settings = Resources.Load<LumosSettings>(nameof(LumosSettings));
+            _libSettings = Resources.Load<LumosLibSettings>(nameof(LumosLibSettings));
             
-            if (_isInitializing || _isInitialized || _settings == null)
+            if (_isInitializing || _isInitialized || _libSettings == null)
                 return;
 
-            if (!_settings.UsePreInit)
+            if (!_libSettings.UsePreInit)
                 return;
 
 
@@ -75,7 +75,7 @@ namespace LumosLib
 
             var initTargets = new List<IPreInitializable>();
 
-            foreach (var prefab in _settings.PreloadObjects)
+            foreach (var prefab in _libSettings.PreloadObjects)
             {
                 if (prefab == null)
                     continue;
