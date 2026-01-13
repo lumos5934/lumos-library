@@ -1,18 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Cysharp.Threading.Tasks;
+using TriInspector;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace LumosLib
 {
+    [DeclareBoxGroup("Resources", Title = "Resources")]
     public class ResourceManager : MonoBehaviour, IPreInitializable, IResourceManager
     {
         #region  >--------------------------------------------------- FIELD
 
-
-        private Dictionary<string, object> _cahcedResources = new();
+        
+        [Group("Resources"), SerializeField, LabelText("Entries")] private List<ResourceEntry> _resourceEntries;
+        
+        private Dictionary<string, Object> _allResources = new();
+        private Dictionary<string, ResourceEntry> _resourceEntriesDict = new();
         
         
         #endregion
@@ -21,6 +26,26 @@ namespace LumosLib
         
         public UniTask<bool> InitAsync()
         {
+            foreach (var entry in _resourceEntries)
+            {
+                entry.Init();
+                
+                if (!_resourceEntriesDict.TryAdd(entry.Label, entry))
+                {
+                    DebugUtil.LogError("duplicate entry label", "Resource");
+                    return UniTask.FromResult(false);
+                }
+                
+                foreach (var resource in entry.Resources)
+                {
+                    if (!_allResources.TryAdd(resource.name, resource))
+                    {
+                        DebugUtil.LogError("duplicate resource name", "Resource");
+                        return UniTask.FromResult(false);
+                    }
+                }
+            }
+            
             GlobalService.Register<IResourceManager>(this);
             return UniTask.FromResult(true);
         }
@@ -30,41 +55,60 @@ namespace LumosLib
         #region  >--------------------------------------------------- LOAD
        
 
-        public T Load<T>(string path) where T : Object
+        public T Load<T>(string fileName) where T : Object
         {
-            if (_cahcedResources.TryGetValue(path, out var cacheResource))
+            if (_allResources.TryGetValue(fileName, out var resource))
             {
-                return cacheResource as T;
-            }
-            
-            var resoruce = Resources.Load<T>(path);
-            if (resoruce != null)
-            {
-                _cahcedResources.Add(path, resoruce);
+                if (resource is T t)
+                {
+                    return t;
+                }
             }
 
-            return resoruce;
+            return null;
+        }
+        
+        public T Load<T>(string label, string fileName) where T : Object
+        {
+            if (_resourceEntriesDict.TryGetValue(label, out var entry))
+            {
+                var resource = entry.GetResource(fileName);
+                if (resource is T t)
+                {
+                    return t;
+                }
+            }
+            
+            return null;
         }
 
-        public T[] LoadAll<T>(string path) where T : Object
+        public List<T> LoadAll<T>(string label) where T : Object
         {
-            if (_cahcedResources.TryGetValue(path, out var cacheResource))
+            if (_resourceEntriesDict.TryGetValue(label, out var entry))
             {
-                return cacheResource as T[];
-            }
-
-            var resources = Resources.LoadAll<T>(path);
-            if (resources != null && resources.Length > 0)
-            {
-                _cahcedResources.Add(path, resources);
+                return entry.Resources
+                    .OfType<T>()  
+                    .ToList();
             }
             
-            return resources;
+            return null;
         }
 
         
         #endregion
-
-
+        #region >--------------------------------------------------- INSPECTOR
+        
+        
+        [Group("Resources"), Button("Collect All Resources")]
+        public void SetEntriesResources()
+        {
+            foreach (var entry in _resourceEntries)
+            {
+                entry.SetResources(ResourcesUtil.Find<Object>(this, entry.FolderPath, SearchOption.TopDirectoryOnly));
+            }
+        }
+        
+        
+        #endregion
     }
 }

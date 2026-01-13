@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
-namespace LumosLib
+namespace LumosLib.Editor
 {
-    public class TestEditorGroup : Editor
+    public class TestEditorGroup : UnityEditor.Editor
     {
         #region >--------------------------------------------------- FIELD
         

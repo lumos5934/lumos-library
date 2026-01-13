@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 using Cysharp.Threading.Tasks;
 using TriInspector;
 
 namespace LumosLib
 {
+    [DeclareBoxGroup("Resources", Title = "Resources")]
     public class UIManager : MonoBehaviour, IUIManager, IPreInitializable
     {
         #region >--------------------------------------------------- FIELDS
 
         
+        [Group("Resources"), SerializeField, ReadOnly] private List<UIBase> _uiPrefabs;
+         
         private Dictionary<Type, UIBase> _createdUIs = new();
         private Dictionary<Type, UIBase> _prefabUIs = new();
         
-        [Title("REQUIREMENT")]
-        [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IResourceManager")] private IResourceManager _resourceManager;
-
 
         #endregion
         #region >--------------------------------------------------- INIT
@@ -24,18 +25,9 @@ namespace LumosLib
         
         public UniTask<bool> InitAsync()
         {
-            _resourceManager = GlobalService.Get<IResourceManager>();
-            if (_resourceManager == null)
-                return UniTask.FromResult(false);
-
-            
-            var uiGlobalPrefabs =  _resourceManager.LoadAll<UIBase>("");
-
-            for (int i = 0; i < uiGlobalPrefabs.Length; i++)
+            foreach (var prefab in _uiPrefabs)
             {
-                var value = uiGlobalPrefabs[i];
-
-                _prefabUIs[uiGlobalPrefabs[i].GetType()] = value;
+                _prefabUIs[prefab.GetType()] = prefab;
             }
             
             GlobalService.Register<IUIManager>(this);
@@ -74,7 +66,7 @@ namespace LumosLib
 
             ui.SetEnable(!ui.IsEnabled);
         }
-
+        
         
         #endregion
         #region >--------------------------------------------------- CREATE
@@ -96,6 +88,18 @@ namespace LumosLib
         }
         
 
+        #endregion
+        #region >--------------------------------------------------- INSPECTOR
+        
+        
+        [Group("Resources"),
+         Button("Collect UI Resources")]
+        public void SetUIResources()
+        {
+            _uiPrefabs = ResourcesUtil.Find<UIBase>(this, "", SearchOption.AllDirectories);
+        }
+        
+        
         #endregion
     }
 }

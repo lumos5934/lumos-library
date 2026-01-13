@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace LumosLib
+namespace LumosLib.Editor
 {
     public abstract class BaseTestEditorWindow : EditorWindow
     {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using Cysharp.Threading.Tasks;
 using TriInspector;
 using UnityEngine;
@@ -6,21 +7,25 @@ using UnityEngine.Audio;
 
 namespace LumosLib
 {
+    [DeclareBoxGroup("Resources")]
     public class AudioManager : MonoBehaviour, IPreInitializable, IAudioManager
     {
         #region >--------------------------------------------------- FIELD
       
-      
+        
+        [Title("REQUIREMENT"), PropertyOrder(-1)]
+        [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IPoolManager")] private IPoolManager _poolManager;
+        [PropertySpace(20f)]
+        
+        [Title("SETTINGS")]
         [SerializeField] private AudioPlayer _audioPlayerPrefab;
         [SerializeField] private AudioMixer _mixer;
+        
+        [Group("Resources"), SerializeField, ReadOnly] private List<SoundAsset> _soundAssets = new();
         
         private readonly Dictionary<string, SoundAsset> _assetResources = new();
         private readonly Dictionary<int, AudioPlayer> _bgmPlayers = new();
         private readonly HashSet<AudioPlayer> _activePlayers = new();
-        
-        [Title("REQUIREMENT")]
-        [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IResourceManager")] private IResourceManager _resourceManager;
-        [ShowInInspector, HideReferencePicker, ReadOnly, LabelText("IPoolManager")] private IPoolManager _poolManager;
         
         
         #endregion
@@ -29,18 +34,13 @@ namespace LumosLib
         
         public UniTask<bool> InitAsync()
         {
-            _resourceManager = GlobalService.Get<IResourceManager>();
-            if (_resourceManager == null)
-                return UniTask.FromResult(false);
-            
             _poolManager = GlobalService.Get<IPoolManager>();
             if (_poolManager == null)
                 return UniTask.FromResult(false);
             
-            var soundResources = _resourceManager.LoadAll<SoundAsset>("");
-            foreach (var resource in soundResources)
+            foreach (var asset in _soundAssets)
             {
-                _assetResources[resource.name] = resource;
+                _assetResources[asset.name] = asset;
             }
 
             GlobalService.Register<IAudioManager>(this);
@@ -191,5 +191,18 @@ namespace LumosLib
 
 
         #endregion
+        #region >--------------------------------------------------- INSPECTOR
+
+        
+        [Group("Resources")]
+        [Button("Collect SoundAsset Resources")]
+        public void SetSoundAssetResources()
+        {
+            _soundAssets = ResourcesUtil.Find<SoundAsset>(this, "", SearchOption.AllDirectories);
+        }
+        
+
+        #endregion
+       
     }
 }
