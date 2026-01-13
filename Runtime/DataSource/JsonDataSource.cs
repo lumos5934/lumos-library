@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using TriInspector;
 using UnityEngine;
 
 namespace LumosLib
@@ -9,16 +10,16 @@ namespace LumosLib
     [CreateAssetMenu(fileName = "Json_DataSource", menuName = "SO/Data Source/Json")]
     public class JsonDataSource : BaseDataSource
     {
-        [SerializeField] private string _folderPath;
+        [InfoBox("Path : C:\\Users\\사용자명\\AppData\\LocalLow\\회사명\\게임명\\FileName.json")]
         [SerializeField] private string _fileName;
-        
+      
         private bool _isInitialized;
         private string _path;
         private JsonSerializerSettings _settings;
 
-        public override async UniTask WriteAsync<T>(T data) 
+        public override async UniTask WriteAsync<T>(T data)
         {
-            if(!_isInitialized) Init(_folderPath, _fileName);
+            if (!_isInitialized) Init();
             
             JObject root = LoadRoot();
 
@@ -26,11 +27,15 @@ namespace LumosLib
 
             string json = root.ToString();
             
+            Debug.Log(_path);
+            
             await File.WriteAllTextAsync(_path, json);
         }
 
         public override UniTask<T> ReadAsync<T>()
         {
+            if (!_isInitialized) Init();
+            
             if (!File.Exists(_path))  
                 return UniTask.FromResult<T>(default);
             
@@ -42,29 +47,28 @@ namespace LumosLib
             return UniTask.FromResult(token.ToObject<T>());
         }
 
-        private void Init(string folderPath, string fileName)
+        private void Init()
         {
-            if (!Directory.Exists(folderPath))
-            {
-                Directory.CreateDirectory(folderPath);
-            }
+            string path = Application.persistentDataPath;
 
-            _path = Path.Combine(folderPath, fileName);
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
 
+            if (!_fileName.EndsWith(".json"))
+                _fileName += ".json";
             
+            _path = Path.Combine(path, _fileName);
+
             if (!File.Exists(_path))
-            {
                 File.WriteAllText(_path, "{}");
-            }
 
             _settings = new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore
             };
-            
-            _isInitialized = true;
         }
+
         
         private JObject LoadRoot()
         {
