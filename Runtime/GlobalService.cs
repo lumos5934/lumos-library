@@ -9,24 +9,35 @@ namespace LumosLib
     {
         private static Dictionary<Type, object> _services = new();
         
+        
         public static void Register<T>(T service) where T : class
         {
-            DestroyOldMonoService<T>();
-
-            if (service is MonoBehaviour monoService)
+            bool contains = _services.ContainsKey(typeof(T));
+            if (contains)
             {
-                Object.DontDestroyOnLoad(monoService.gameObject);
+                if (service is MonoBehaviour containsMono)
+                {
+                    Object.Destroy(containsMono.gameObject);
+                }
+                
+                DebugUtil.LogWarning($"{typeof(T)} : ALREADY REGISTERED. Ignore new one.", " Fail Register ");
+                return;
+            }
+            
+            if (service is MonoBehaviour mono)
+            {
+                Object.DontDestroyOnLoad(mono.gameObject);
             }
             
             _services[typeof(T)] = service;
         }
 
+        
         public static void Unregister<T>() where T : class
         {
-            DestroyOldMonoService<T>();
-            
             _services.Remove(typeof(T));
         }
+        
         
         public static T Get<T>() where T : class
         {
@@ -37,17 +48,6 @@ namespace LumosLib
 
             DebugUtil.LogWarning($"{typeof(T)}", " NOT REGISTERED ");
             return null;
-        }
-
-        private static void DestroyOldMonoService<T>() where T : class
-        {
-            if (_services.TryGetValue(typeof(T), out var oldService))
-            {
-                if (oldService is MonoBehaviour monoBehaviour)
-                {
-                    UnityEngine.Object.Destroy(monoBehaviour.gameObject);
-                }
-            }
         }
     }
 }

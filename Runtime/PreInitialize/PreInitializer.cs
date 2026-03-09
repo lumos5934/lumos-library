@@ -13,11 +13,9 @@ namespace LumosLib
         private static int _maxInitCount;
         private static int _failCount;
 
-        private static bool _isInitializing;
         private static bool _isInitialized;
 
         private static UniTaskCompletionSource _initBarrier;
-        private static LumosLibSettings _libSettings;
         
         public static bool IsInitialized => _isInitialized;
 
@@ -37,18 +35,13 @@ namespace LumosLib
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init()
         {
-            _libSettings = Resources.Load<LumosLibSettings>(nameof(LumosLibSettings));
+            var libSettings = Resources.Load<LumosLibSettings>(nameof(LumosLibSettings));
             
-            if (_isInitializing || _isInitialized || _libSettings == null)
+            if (libSettings == null ||
+                !libSettings.UsePreInit)
                 return;
 
-            if (!_libSettings.UsePreInit)
-                return;
-
-
-            _isInitializing = true;
-
-            Initialize().Forget();
+            Initialize(libSettings).Forget();
         }
         
         public static UniTask WaitInitAsync()
@@ -59,7 +52,7 @@ namespace LumosLib
             return _initBarrier.Task;
         }
 
-        private static async UniTask Initialize()
+        private static async UniTask Initialize(LumosLibSettings libSettings)
         {
             DebugUtil.Log("", " INIT : START ");
 
@@ -67,7 +60,7 @@ namespace LumosLib
 
             var initTargets = new List<IPreInitializable>();
 
-            foreach (var prefab in _libSettings.PreloadObjects)
+            foreach (var prefab in libSettings.PreloadObjects)
             {
                 if (prefab == null)
                     continue;
@@ -126,7 +119,6 @@ namespace LumosLib
         private static void FinishInit()
         {
             _isInitialized = true;
-            _isInitializing = false;
 
             _initBarrier.TrySetResult();
         }
