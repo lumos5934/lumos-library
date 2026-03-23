@@ -183,14 +183,12 @@ namespace LumosLib.Editor
                 .Select(t => Activator.CreateInstance(t) as ITestToolElement)
                 .OrderBy(t => t.Priority)
                 .ToList();
-
+            
             _titleStyle = null;
             _titleShadowStyle = null;
-            
             _mainRectStyle = null;
             _sideRectStyle = null;
             _contentRectStyle = null;
-            
             _btnStyle = null;
             _noticeStyle = null;
             
@@ -289,21 +287,19 @@ namespace LumosLib.Editor
             EditorGUILayout.BeginVertical();
             {
                 GUILayout.FlexibleSpace();
-
                 EditorGUILayout.BeginHorizontal();
                 {
                     GUILayout.FlexibleSpace();
-
                     string message = "⚠️ RUNTIME ONLY";
                     GUILayout.Label(message, NoticeStyle, GUILayout.MinWidth(300), GUILayout.MinHeight(100));
-
-                    GUILayout.FlexibleSpace(); // 오른쪽 여백 밀어내기
+                    GUILayout.FlexibleSpace();
+                    
                     EditorGUILayout.EndHorizontal();
-                    {
-                        GUILayout.FlexibleSpace(); // 아래쪽 여백 밀어내기
-                        EditorGUILayout.EndVertical();
-                    }
                 }
+                
+        
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.EndVertical();
             }
         }
      
