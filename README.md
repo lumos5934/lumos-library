@@ -789,17 +789,39 @@ public class TestToolTemp2Element : ITestToolElement
 
 ---
 
+### Popup
 
-## ℹ️사전 작업
+**PopupManager** <br>
+`Create / [LumosLib] / Prefabs / Manager / Popup`
 
-![Preload](https://github.com/user-attachments/assets/5bb381a1-24b1-407c-8f56-ebd1e4dc6224)
-![GetAsyncManager](https://github.com/user-attachments/assets/95862b4c-4cd2-432b-b358-bad5d98c0cf4)
+UI 중 통상적인 팝업에 해당하는 **UIPopup**` 들을 간편히 관리 하기 위한 관리자. 기본적으로 카메라 기반으로 작동하므로 팝업에 해당 하는 UI 의 `CanvasRenderMode` 도 카메라로 강제됨. 런타임 시 리소스를 통해 캐싱해두기 떄문에 해당 팝업 UI 가 리소스 매니저를 통해 관리되어야함. 
 
-> [!NOTE]
-> 컴파일시 Resources 에 자동 생성 혹은 직접 생성한 LumosLibSetting 을 통해 <br>
-> 사전 생성할 오브젝트를 추가, 초기화 할 수 있습니다. <br>
-> Use 체크를 통해 사전 생성, 초기화를 실행 할 지 선택 할 수 있으며, <br>
-> 어느 씬에서든지 런타임시 비동기적으로 사전 초기화를 진행합니다.
+<table>
+  <tr>
+    <td><b>Open()<b></td>
+    <td>해당 타입의 팝업을 Open</td>
+  </tr>
+        <tr>
+    <td><b>Close<b></td>
+    <td>가장 상단의 팝업을 Close</td>
+  </tr>
+       <tr>
+    <td><b>Close(T)<b></td>
+    <td>지정 팝업을 Close</td>
+  </tr>
+      <tr>
+    <td><b>CloseAll()<b></td>
+    <td>모든 팝업을 Close</td>
+  </tr>
+      <tr>
+    <td><b>Get<b></td>
+    <td>해당 하는 타입의 팝업을 반환</td>
+  </tr>
+</table>
+
 
 <br>
+<br>
+
+---
 
