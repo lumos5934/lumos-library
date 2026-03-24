@@ -301,6 +301,7 @@ InputSystem 을 통해 메인 클릭에 대한 처리를 담당.
 
 
 <br>
+<br>
 
 **PointerDownEvent & UpEvent**
 
@@ -319,6 +320,7 @@ InputSystem 을 통해 메인 클릭에 대한 처리를 담당.
   </tr>
 </table>
 
+<br>
 <br>
 
 ```csharp
@@ -354,8 +356,11 @@ private void OnPointerDown(PointerDownEvent evt)
 
 <img width="472" height="270" alt="image" src="https://github.com/user-attachments/assets/f53b06e9-a2cf-4df8-ab0a-16bab73839d6" />
 
+<br>
+
 플레이시 `Preload Objects` 들을 생성하고 `Use Pre Initialize` 체크 시 사전 초기화를 진행. `[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]` 시점에 병렬식 비동기로 진행되므로 씬에 미리 배치되어있던 오브젝트의 Awake등에서 호출 주의
 
+<br>
 
 <table>
   <tr>
@@ -371,6 +376,8 @@ private void OnPointerDown(PointerDownEvent evt)
     <td>외부에서 해당 초기화가 완료될때까지 비동기로 기다리는 UniTask</td></td>
   </tr>
 </table>
+
+<br>
 
 ```cs
 
@@ -390,9 +397,9 @@ public async void Awake()
 
 사전 초기화를 진행 할 대상. `UniTask<bool> InitAsync(PreInitContext ctx);` 매서드를 통해 초기화를 진행하고 결과를 bool 로 리턴. 만약 초기화중 참조해야 할 대상 또한 초기화 대상이라면 `context` 의 `GetAsync()` 를 호출하여 대상의 초기화를 기다린 후 진행 가능. 
 
-```cs
+<br>
 
-```
+```cs
 
  protected override async UniTask<bool> OnInitAsync(PreInitContext ctx)
 {
@@ -406,6 +413,8 @@ public async void Awake()
     if (result == null) 
         return false;
 }
+
+```
 
 <br>
 <br>
