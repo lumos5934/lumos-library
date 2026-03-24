@@ -22,21 +22,49 @@
 
 ## 🔧기능
 
-* [ Audio ](#Audio)
-* [ EventBus ](#EventBus)
-* [ FSM ](#FSM)
-* [ Services ](#Services)
-* [ Input ](#Input)
-* [ PreInitialize ](#PreInitialize)
-* [ Pool ](#Pool)
-* [ Resource ](#Resource)
-* [ Save ](#Save)
-* [ Tutorial ](#Tutorial)
-* [ TestTool ](#TestTool)
-* [ Popup ](#Popup)
+| Core | Editor | Management | Gameplay | UI |
+| :--- | :--- | :--- | :---| :---|
+| [ PreInitialize ](#PreInitialize)<br>[ Services ](#Services)<br>[ EventBus ](#EventBus)<br>[ FSM ](#FSM)| [ TestTool ](#TestTool) | [ Save ](#Save)<br>[ Pool ](#Pool)<br>[ Resource ](#Resource) | [ Input ](#Input)<br>[ Audio ](#Audio)<br>[ Tutorial ](#Tutorial) | [ Popup ](#Popup)
 
-<br>
-<br>
+
+<table align="center">
+  <thead>
+    <tr>
+      <th width="30%"><b>Core</b></th>
+      <th width="30%"><b>Editor</b></th>
+      <th width="30%"><b>Management</b></th>
+      <th width="30%"><b>Gameplay</b></th>
+      <th width="30%"><b>UI</b></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td valign="top">
+        <a href="#PreInitialize">PreInitialize</a><br>
+        <a href="#Services">Services</a><br>
+        <a href="#EventBus">EventBus</a><br>
+        <a href="#FSM">FSM</a>
+      </td>
+      <td valign="top">
+        <a href="#TestTool">TestTool</a>
+      </td>
+      <td valign="top">
+        <a href="#Save">Save</a><br>
+        <a href="#Pool">Pool</a><br>
+        <a href="#Resource">Resource</a>
+      </td>
+      <td valign="top">
+        <a href="#Input">Input</a><br>
+        <a href="#Audio">Audio</a><br>
+        <a href="#Tutorial">Tutorial</a>
+      </td>
+      <td valign="top">
+        <a href="#Popup">Popup</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 
 ---
 
