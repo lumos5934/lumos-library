@@ -28,7 +28,7 @@
 * [ Services ](#Services)
 * [ Input ](#Input)
 * [ PreInitialize ](#PreInitialize)
-* [ Pool ](https://www.notion.so/Pool-2df3966a742c8066b614c44f459abde8?source=copy_link)
+* [ Pool ](#Pool)
 * [ Resource ](https://www.notion.so/Resource-2df3966a742c80bbbad3d8fbf0bd24d2?source=copy_link)
 * [ Save ](https://www.notion.so/Save-2df3966a742c80898b8ad7cd3d16f9ec?source=copy_link)
 * [ Tutorial ](https://www.notion.so/Tutorial-2df3966a742c808b860be13cf2e99a08?source=copy_link)
@@ -420,6 +420,40 @@ public async void Awake()
 <br>
 
 ---
+
+### Pool
+
+**PoolManager**
+
+유니티 오브젝트 풀을 래핑한 형태의 관리자. 추후 변경 가능성 높음.
+
+<table>
+  <tr>
+    <td><b>Get(prefab)<b></td>
+    <td>해당 프리팹 반환 or 생성</td>
+  </tr>
+  <tr>
+    <td><b>Release(obj)<b></td>
+    <td>해당 오브젝트를 풀로 반환</td>
+  </tr>
+  <tr>
+    <td><b>ReleaseAll(prefab)</td>
+    <td>해당 프리팹 타입의 모든 오브젝트를 풀로 반환</td>
+  </tr>
+      <tr>
+    <td><b>DestroyAll(prefab)</td>
+    <td>해당 프리팹 타입의 모든 오브젝트를 파괴</td>
+  </tr>
+</table>
+
+[🎞️튜토리얼](https://youtu.be/uHugRk2FvsE?si=enZf8aUPJZqyzbuO)
+
+<br>
+<br>
+
+---
+
+
 
 
 
