@@ -369,13 +369,6 @@ public class MoveState : IState
 
 기본적인 제이슨 형태의 데이터 저장소 `FileName` 을 기입하면 자동으로 `FolderPath` 를 시각적으로 보여주며 해당 폴더의 Open 버튼 제공
 
-<table>
-  <tr>
-    <td><b>FileName<b></td>
-    <td>원하는 데이터 저장소 SO</td>
-  </tr>
-</table>
-
 
 <br>
 
