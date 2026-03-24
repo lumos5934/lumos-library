@@ -720,6 +720,75 @@ public class TutorialTrigger : MonoBehaviour
 
 ---
 
+### TestTool
+`Window / [LumosLib] / TestTool` 
+
+<img width="421" height="540" alt="image" src="https://github.com/user-attachments/assets/b423db3b-d9c3-4ead-afe8-986c903aa9a5" />
+
+<br>
+
+Editor Window 를 활용하여 프로젝트에서 여러가지 기능 테스트 상황을 한 곳으로 모으고 시각적으로 용이하도록 제작된 툴. Settings 을 통해 여러가지 커스터 마이징이 가능함.
+
+<br>
+<br>
+
+**ITestToolElement**
+
+실제 내용이 그려질 인터페이스, 상속받아 OnGUI 부분에 에디터 레이아웃 코드를 직접 작성하여 원하는 내용을 출력.
+
+<table>
+  <tr>
+    <td><b>Title<b></td>
+    <td>버튼에 표시될 이름</td>
+  </tr>
+        <tr>
+    <td><b>Priority<b></td>
+    <td>카테고리의 상단에 위치할 순서</td>
+  </tr>
+       <tr>
+    <td><b>IsRunTimeOnly<b></td>
+    <td>해당 내용이 플레이 시에만 보여질 것인지 표시</td>
+  </tr>
+      <tr>
+    <td><b>OnEnable(testTool)<b></td>
+    <td>TestTool이 처음 열리거나 프로젝트가 컴파일시 호출</td>
+  </tr>
+      <tr>
+    <td><b>OnGUI<b></td>
+    <td>매 프레임 그려질 내용을 작성</td>
+  </tr>
+</table>
+
+```cs
+public class TestToolTemp2Element : ITestToolElement
+{
+    public string Title => "Temp2";
+    public int Priority => 0;
+    public bool IsRunTimeOnly => false;
+    public void OnEnable(TestTool testTool)
+    {
+    }
+
+    private int _testNum;
+    public void OnGUI()
+    {
+        EditorGUILayout.LabelField("Temp2", EditorStyles.boldLabel);
+        _testNum = EditorGUILayout.IntField("TestNum", _testNum);
+    }
+}
+
+```
+
+
+<br>
+
+[🎞️튜토리얼](https://youtu.be/YE4tB3xCXzk)
+
+<br>
+<br>
+
+---
+
 
 ## ℹ️사전 작업
 
