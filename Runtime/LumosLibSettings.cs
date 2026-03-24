@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using TriInspector;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 [assembly: InternalsVisibleTo("LumosLib.Editor")]
 namespace LumosLib
@@ -9,7 +13,19 @@ namespace LumosLib
     [CreateAssetMenu(fileName = "LumosLibSettings", menuName = "[ LumosLib ]/Scriptable Objects/Settings", order = int.MinValue)]
     public class LumosLibSettings : ScriptableObject
     {
-        public static LumosLibSettings Instance { get; set; }
+        private static LumosLibSettings _instance;
+        public static LumosLibSettings Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = UnityEditor.PlayerSettings.GetPreloadedAssets()
+                        .OfType<LumosLibSettings>().FirstOrDefault();
+                }
+                return _instance;
+            }
+        }
         
         [Title("Preload")]
         [SerializeField] private bool _usePreInitialize;
@@ -17,6 +33,39 @@ namespace LumosLib
         [PropertySpace(10f)] 
         [SerializeField] private List<GameObject> _preloadObjects;
 
+#if UNITY_EDITOR
+        [Button]
+        public void RegisterToPlayerSettings()
+        {
+            var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
+            if (!preloadedAssets.Contains(this))
+            {
+                preloadedAssets.Add(this);
+                PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
+                DebugUtil.Log("Success registered","LumosLibSettings");
+            }
+            else
+            {
+                DebugUtil.Log("Already registered","LumosLibSettings");
+            }
+        }
+        
+        [Button]
+        public void UnregisterToPlayerSettings()
+        {
+            var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
+            if (preloadedAssets.Contains(this))
+            {
+                preloadedAssets.Remove(this);
+                PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
+                DebugUtil.Log("Success unregistered","LumosLibSettings");
+            }
+            else
+            {
+                DebugUtil.Log("Not registered","LumosLibSettings");
+            }
+        }
+#endif
         public bool UsePreInitialize => _usePreInitialize;
         public List<GameObject> PreloadObjects => _preloadObjects;
 

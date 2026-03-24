@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
@@ -16,12 +17,8 @@ namespace LumosLib.Editor
         
         private static void OnEditorFullyLoaded()
         {
-            var settings = LumosLibSettings.Instance;
-            if (settings != null)
-                return;
-
             string assetPath = $"Assets/{nameof(LumosLibSettings)}.asset";
-            settings = AssetDatabase.LoadAssetAtPath<LumosLibSettings>(assetPath);
+            var settings = AssetDatabase.LoadAssetAtPath<LumosLibSettings>(assetPath);
 
             if (settings == null)
             {
@@ -30,8 +27,12 @@ namespace LumosLib.Editor
                 AssetDatabase.SaveAssets();
             }
 
-            LumosLibSettings.Instance = settings;
-            AssetDatabase.Refresh();
+            var preloadedAssets = PlayerSettings.GetPreloadedAssets().ToList();
+            if (!preloadedAssets.Contains(settings))
+            {
+                preloadedAssets.Add(settings);
+                PlayerSettings.SetPreloadedAssets(preloadedAssets.ToArray());
+            }
         }
     }
 }
