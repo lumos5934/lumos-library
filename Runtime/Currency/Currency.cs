@@ -1,14 +1,14 @@
 using System;
-using UnityEngine;
+using System.Numerics;
 
 namespace LumosLib
 {
     public class Currency
     {
         public int ID { get; }
-        public long Value { get; private set; }
+        public BigInteger Value { get; private set; }
 
-        public event Action<long, long> OnChanged;
+        public event Action<BigInteger, BigInteger> OnChanged;
 
         
         public Currency(int id)
@@ -17,19 +17,24 @@ namespace LumosLib
         }
 
         
-        public Currency(int id, long initialValue) : this(id)
+        public Currency(int id, BigInteger initialValue) : this(id)
         {
-            var value = Math.Clamp(initialValue, 0, long.MaxValue);
-            
-            Value = Math.Max(0, value);
+            if (initialValue > 0)
+            {
+                Value = initialValue;
+            }
         }
 
         
-        public void Set(long newValue)
+        public void Set(BigInteger newValue)
         {
-            long previous = Value;
-            var value = Math.Clamp(newValue, 0, long.MaxValue);
-            Value = Math.Max(0, value);
+            BigInteger previous = Value;
+            Value = newValue < BigInteger.Zero ? BigInteger.Zero : newValue;
+            
+            if (Value < 0)
+            {
+                Value = 0;
+            }
 
             if (previous != Value)
             {
@@ -38,15 +43,16 @@ namespace LumosLib
         }
 
         
-        public void Add(long amount)
+        public void Add(BigInteger amount)
         {
+
             Set(Value + amount);
         }
         
         
-        public bool Consume(long amount)
+        public bool Consume(BigInteger amount)
         {
-            if (Value < amount) 
+            if (amount <= BigInteger.Zero || Value < amount) 
                 return false;
             
             Set(Value - amount);
