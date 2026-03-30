@@ -290,14 +290,12 @@ namespace LumosLib.Editor
             
             var lineColor = Settings.TitleUnderLineColor;
             var lineColorShadowColor = lineColor * 0.4f;
-            lineColor.a = lineColor.a;
             
             EditorGUI.DrawRect(new Rect(rect.x, lineY - 1f, rect.width, 1), lineColorShadowColor);
             EditorGUI.DrawRect(new Rect(rect.x, lineY, rect.width, 2), lineColor);
 
             var highLightColor = Settings.TitleUnderLineHighlightColor;
             var highLightShadowColor = highLightColor * 0.4f;
-            highLightShadowColor.a = highLightColor.a;
           
             EditorGUI.DrawRect(new Rect(rect.center.x - 20, lineY - 1f, 40, 1), highLightShadowColor);
             EditorGUI.DrawRect(new Rect(rect.center.x - 20, lineY, 40, 2), Settings.TitleUnderLineHighlightColor);
