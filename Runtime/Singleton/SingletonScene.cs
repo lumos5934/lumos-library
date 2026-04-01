@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace LumosLib
+namespace LLib
 {
     public abstract class SingletonScene<T> : MonoBehaviour where T : MonoBehaviour
     {

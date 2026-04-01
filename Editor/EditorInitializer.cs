@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace LumosLib.Editor
+namespace LLib.Editor
 {
     public static class EditorInitializer
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
-namespace LumosLib
+namespace LLib
 {
     public class PopupManager : BasePopupManager
     {

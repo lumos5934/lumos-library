@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace LumosLib
+namespace LLib
 {
     [RequireComponent(typeof(Canvas)),
      RequireComponent(typeof(CanvasScaler)),

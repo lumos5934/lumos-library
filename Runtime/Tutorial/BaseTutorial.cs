@@ -1,5 +1,5 @@
 ﻿
-namespace LumosLib
+namespace LLib
 {
     public abstract class BaseTutorial
     {

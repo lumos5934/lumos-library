@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace LumosLib
+namespace LLib
 {
     public class Currency
     {

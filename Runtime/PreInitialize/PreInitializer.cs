@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 
-namespace LumosLib
+namespace LLib
 {
     public static class PreInitializer
     {

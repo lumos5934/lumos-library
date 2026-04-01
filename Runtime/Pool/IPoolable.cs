@@ -1,4 +1,4 @@
-﻿namespace LumosLib
+﻿namespace LLib
 {
     public interface IPoolable
     {

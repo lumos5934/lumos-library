@@ -1,4 +1,4 @@
-﻿namespace LumosLib.Editor
+﻿namespace LLib.Editor
 {
     public interface ITestToolElement
     {

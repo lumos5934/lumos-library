@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace LumosLib
+namespace LLib
 {
     public class PreInitContext
     {

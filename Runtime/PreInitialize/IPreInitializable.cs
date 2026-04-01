@@ -1,6 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 
-namespace LumosLib
+namespace LLib
 {
     public interface IPreInitializable
     {

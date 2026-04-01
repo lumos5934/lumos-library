@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace LumosLib
+namespace LLib
 {
     [RequireComponent(typeof(CanvasGroup),
         typeof(RectTransform))]

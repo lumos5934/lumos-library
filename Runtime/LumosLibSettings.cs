@@ -8,7 +8,7 @@ using UnityEditor;
 #endif
 
 [assembly: InternalsVisibleTo("LumosLib.Editor")]
-namespace LumosLib
+namespace LLib
 {
     [CreateAssetMenu(fileName = "LumosLibSettings", menuName = "[ LumosLib ]/Scriptable Objects/Settings", order = int.MinValue)]
     public class LumosLibSettings : ScriptableObject

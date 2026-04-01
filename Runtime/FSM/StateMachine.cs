@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.Events;
 
-namespace LumosLib
+namespace LLib
 {
     public class StateMachine
     {

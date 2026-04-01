@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace LumosLib
+namespace LLib
 {
     public static class Services
     {

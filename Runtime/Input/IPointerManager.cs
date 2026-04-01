@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace LumosLib
+namespace LLib
 {
     public interface IPointerManager
     {

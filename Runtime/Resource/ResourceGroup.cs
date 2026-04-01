@@ -4,7 +4,7 @@ using TriInspector;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace LumosLib
+namespace LLib
 {
     [Serializable]
     public class ResourceGroup

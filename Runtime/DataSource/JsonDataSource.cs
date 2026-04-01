@@ -6,7 +6,7 @@ using TriInspector;
 using UnityEditor;
 using UnityEngine;
 
-namespace LumosLib
+namespace LLib
 {
     [CreateAssetMenu(fileName = "Json_DataSource", menuName = "[ LumosLib ]/Scriptable Objects/Data Source/Json")]
     public class JsonDataSource : BaseDataSource

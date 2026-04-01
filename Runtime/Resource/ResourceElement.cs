@@ -2,7 +2,7 @@
 using TriInspector;
 using UnityEngine;
 
-namespace LumosLib
+namespace LLib
 {
     [System.Serializable]
     public class ResourceElement

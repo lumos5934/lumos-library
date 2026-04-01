@@ -5,7 +5,7 @@ using TriInspector;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace LumosLib
+namespace LLib
 {
     public class ResourceManager : MonoBehaviour, IResourceManager, IPreInitializable
     {

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 
-namespace LumosLib.Editor
+namespace LLib.Editor
 {
     public static class EditorCreateAssetMenu
     {

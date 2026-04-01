@@ -5,7 +5,7 @@ using TriInspector;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace LumosLib
+namespace LLib
 {
     [DeclareBoxGroup("Resources")]
     public class AudioManager : MonoBehaviour, IAudioManager, IPreInitializable

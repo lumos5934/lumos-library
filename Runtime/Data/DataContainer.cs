@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LumosLib
+namespace LLib
 {
     public class DataContainer<T> where T : BaseData
     {

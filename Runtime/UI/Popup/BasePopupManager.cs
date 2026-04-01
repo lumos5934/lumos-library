@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace LumosLib
+namespace LLib
 {
     public abstract class BasePopupManager : MonoBehaviour, IPopupManager, IPreInitializable
     {

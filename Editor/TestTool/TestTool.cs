@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-namespace LumosLib.Editor
+namespace LLib.Editor
 {
     public class TestTool : EditorWindow
     {
