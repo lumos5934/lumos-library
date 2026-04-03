@@ -65,16 +65,16 @@ namespace LLib.Editor
 
             _modules = Settings.Modules;
             
-            DrawTitle();
-            DrawUnderline(GUILayoutUtility.GetLastRect());
-            
-            Rect mainRect = EditorGUILayout.BeginVertical(Settings.MainRectStyle);
+            _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, false, false, GUIStyle.none, GUIStyle.none, GUIStyle.none);
             {
-                EditorGUI.DrawRect(mainRect, Settings.BottomBackgroundColor);
-                DrawGrid(mainRect);
-             
-                _scrollPos = EditorGUILayout.BeginScrollView(_scrollPos, false, false, GUIStyle.none, GUIStyle.none, GUIStyle.none);
+                DrawTitle();
+                DrawUnderline(GUILayoutUtility.GetLastRect());
+            
+                Rect mainRect = EditorGUILayout.BeginVertical(Settings.MainRectStyle);
                 {
+                    EditorGUI.DrawRect(mainRect, Settings.BottomBackgroundColor);
+                    DrawGrid(mainRect);
+             
                     if (_selectedModule == null)
                     {
                         EditorGUILayout.Space(2);
@@ -104,14 +104,12 @@ namespace LLib.Editor
                             EditorGUILayout.EndHorizontal();
                         }
                     }
-                    
-                    EditorGUILayout.EndScrollView();
-                }
                    
-                EditorGUILayout.EndVertical();
+                    EditorGUILayout.EndVertical();
+                }
+                
+                EditorGUILayout.EndScrollView();
             }
-            
-         
         }
 
         #region TOP
