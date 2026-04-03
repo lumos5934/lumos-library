@@ -2,14 +2,8 @@
 {
     public class BaseData
     {
-        public readonly string Name;
-        public readonly int ID;
-
-        public BaseData(string name, int id)
-        {
-            Name = name;
-            ID = id;
-        }
+        public string Name { get; private set; }
+        public int ID { get; private set; }
     }
 }
 
