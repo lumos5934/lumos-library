@@ -20,6 +20,12 @@ namespace LLib
         }
 
 
+        public IEnumerable<Currency> GetAll()
+        {
+            return _currencies.Values;
+        }
+
+
         public BigInteger GetValue(int id)
         {
             return Get(id).Value;
