@@ -11,7 +11,7 @@ namespace LLib.Editor
         private TestToolSettings Settings => TestToolSettings.instance;
 
 
-        public void Init()
+        public override void Init()
         {
             var modules = Settings.Modules;
             
@@ -38,15 +38,11 @@ namespace LLib.Editor
                 
                 if (previousValue != modules[index] && modules[index] != null)
                 {
-                    modules[index].OnActive();
+                    modules[index].Init();
                 }
             };
         
             _reorderableList.onAddCallback = (list) => modules.Add(null);
-        }
-
-        public override void OnActive()
-        {
         }
         
 

@@ -44,9 +44,16 @@ namespace LLib.Editor
         
         private void OnEnable()
         {
+            Settings.InitStyles();
+            
+            
+            foreach (var module in _modules)
+            {
+                module.Init();
+            }
+            
             SettingsModule.Init();
             
-            Settings.InitStyles();
            
             EditorApplication.update += Repaint;
         }
