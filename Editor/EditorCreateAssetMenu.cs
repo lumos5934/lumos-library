@@ -103,12 +103,6 @@ namespace LLib.Editor
             CreatePrefab<PoolManager>();
         }
         
-        [MenuItem("Assets/Create/[ LLib ]/Prefabs/Manager/Pointer", false, int.MinValue)]
-        public static void CreatePointerManagerPrefab()
-        {
-            CreatePrefab<PointerManager>();
-        }
-        
         [MenuItem("Assets/Create/[ LLib ]/Prefabs/Manager/Tutorial", false, int.MinValue)]
         public static void CreateTutorialManagerPrefab()
         {
