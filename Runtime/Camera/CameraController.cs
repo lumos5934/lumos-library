@@ -22,7 +22,14 @@ namespace LLib
     
         protected virtual void OnEnable()
         {
-            Services.Get<CameraManager>()?.Add(_key, this);
+            var cameraMgr = Services.Get<CameraManager>();
+            if (cameraMgr == null)
+            {
+                gameObject.SetActive(false);
+                return;
+            }
+            
+            cameraMgr.Add(_key, this);
         }
 
     

@@ -71,6 +71,14 @@ namespace LLib.Editor
         /// <summary>
         /// Prefabs
         /// </summary>
+        /// 
+        
+        [MenuItem("Assets/Create/[ LLib ]/Prefabs/Manager/Camera", false, int.MinValue)]
+        public static void CreateCameraManagerPrefab()
+        {
+            CreatePrefab<CameraManager>();
+        }
+        
         
         [MenuItem("Assets/Create/[ LLib ]/Prefabs/Manager/Resource", false, int.MinValue)]
         public static void CreateResourceManagerPrefab()
