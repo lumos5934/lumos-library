@@ -1,13 +1,12 @@
 {
-  "name": "com.lumos.core",
+  "name": "com.llib.core",
   "version": "1.0.0",
-  "displayName": "Lumos Core",
+  "displayName": "LLib",
   "description": "description",
-  "unity": "2021.2",
+  "unity": "2022.0",
   "author": {
-    "name": "Lumos",
-    "email": "lumos5934@gmail.com",
-    "url": ""
+    "name": "LUMOS",
+    "email": "lumos5934@gmail.com"
   },
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.2.2"
