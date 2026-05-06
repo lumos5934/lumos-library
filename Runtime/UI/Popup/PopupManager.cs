@@ -105,7 +105,7 @@ namespace LLib
             return null;
         }
 
-        public T Open<T>(Action<T> onBeforeOpen) where T : UIPopup
+        public T Open<T>(Action<T> onBeforeOpen = null) where T : UIPopup
         {
             var opened = Get<T>();
             if (opened != null)
