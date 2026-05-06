@@ -205,10 +205,11 @@ namespace LLib
         private void UpdateOrders()
         {
             int dimmerOrder = -1;
+            int order = 0;
             
             for (int i = 0; i < _openedPopups.Count; i++)
             {
-                int order = (i + 1) * 10;
+                order = (i + 1) * 10;
                 
                 _openedPopups[i].SetOrder(order);
                 
@@ -223,6 +224,7 @@ namespace LLib
                 if (dimmerOrder > -1)
                 {
                     _dimmerCanvas.gameObject.SetActive(true);
+                    _dimmerCanvas.sortingLayerID = _openedPopups[order].Canvas.sortingLayerID;
                     _dimmerCanvas.sortingOrder = dimmerOrder;
                 }
                 else

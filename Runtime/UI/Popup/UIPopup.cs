@@ -15,7 +15,7 @@ namespace LLib
         
         protected virtual void OnDestroy()
         {
-            Services.Get<PopupManager>()?.Add(this);
+            Services.Get<PopupManager>()?.Remove(this);
         }
         
         
@@ -23,7 +23,7 @@ namespace LLib
         {
             base.Init();
             
-            Services.Get<PopupManager>()?.Remove(this);
+            Services.Get<PopupManager>()?.Add(this);
         }
     }
 }
