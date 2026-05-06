@@ -12,6 +12,7 @@ namespace LLib
     public class PopupManager : MonoBehaviour, IPreInitializable
     {
         [InfoBox("Requirement : IResourceManager")]
+        [SerializeField] private int _startSortingOrder;
         [SerializeField] private Canvas _dimmerCanvas;
         
         private Dictionary<Type, UIPopup> _popupPrefabDict = new();
@@ -209,7 +210,7 @@ namespace LLib
             
             for (int i = 0; i < _openedPopups.Count; i++)
             {
-                order = (i + 1) * 10;
+                order = _startSortingOrder + (i + 1) * 10;
                 
                 _openedPopups[i].SetOrder(order);
                 
@@ -224,7 +225,6 @@ namespace LLib
                 if (dimmerOrder > -1)
                 {
                     _dimmerCanvas.gameObject.SetActive(true);
-                    _dimmerCanvas.sortingLayerID = _openedPopups[order].Canvas.sortingLayerID;
                     _dimmerCanvas.sortingOrder = dimmerOrder;
                 }
                 else
